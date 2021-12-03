@@ -22,9 +22,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-   public Optional<User> getUserById(Long userId) {
+   public Optional<User> getUserById(int userId) {
         return userRepository.findById(userId);
    }
 
-
+    public  User findUserByEmail(String email){
+       return userRepository.findUserByEmail(email);
+    }
 }

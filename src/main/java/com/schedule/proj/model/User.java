@@ -36,8 +36,6 @@ public class User {
     @Column(name = "user_role")
     private UserRole userRole;
 
-
-
     @Column(unique=true)
     //@Email(message = "Email should be valid")
     private String email;

@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,13 +33,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO request){
-        System.out.println("hhhh");
+    public ResponseEntity<?> login(@RequestBody LoginDTO request, HttpServletResponse response){
         Map<String, String> res = new HashMap<>();
         try {
             String token = authenticationService.login(request);
             res.put("message","You have successfully logged in");
+            // todo: replace with header "Set-Cookie": "Authorization: token"
             res.put("token", token);
+
+            Cookie cookie = new Cookie("Authorization", token);
+            response.addCookie(cookie);
+
             return ResponseEntity.ok(res);
         }catch (AuthenticationException ex) {
             res.put("message", ex.getMessage());

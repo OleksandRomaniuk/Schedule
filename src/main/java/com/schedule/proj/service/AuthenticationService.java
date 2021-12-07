@@ -25,7 +25,8 @@ import java.time.Instant;
 import java.util.Date;
 
 
-@Service @AllArgsConstructor
+@Service
+@AllArgsConstructor
 public class AuthenticationService {
 
 

@@ -7,6 +7,7 @@ import com.schedule.proj.repository.UserRepository;
 import com.schedule.proj.security.jwt.cache.TokenCache;
 import com.schedule.proj.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Key;
 import java.util.Date;
 
 
@@ -35,8 +37,7 @@ public class JwtProvider {
         this.userRepository = userRepository;
     }
 
-    @Value("$(jwt.secret)")
-    private String jwtSecret;
+    static Key jwtSecret = MacProvider.generateKey();
     private String header="Authorization";
 
     public String generateAuthToken(Authentication authentication) {
@@ -60,14 +61,15 @@ public class JwtProvider {
                 .compact();
     }
 
+
     public boolean validateToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             validateTokenIsNotForALoggedOutDevice(authToken);
             return true;
-        } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+        } catch (SignatureException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
 
-           return false;
+            return false;
         }
 
     }
@@ -78,8 +80,6 @@ public class JwtProvider {
     }
 
     public String getTokenFromRequest(HttpServletRequest request) {
-
-        // todo: change to ~"cookies" + parse Authorization
         Cookie cookie = WebUtils.getCookie(request, "Authorization");
 
         return cookie == null ? request.getHeader(header) : cookie.getValue();

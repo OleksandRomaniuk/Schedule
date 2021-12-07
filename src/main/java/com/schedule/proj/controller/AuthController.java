@@ -27,38 +27,41 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api/auth")
 public class AuthController {
-
     @Autowired
-    AuthenticationService authenticationService;
-    UserService userService;
+    private AuthenticationService authenticationService;
+    @Autowired
+    private UserService userService;
 
-
-    public AuthController(AuthenticationService authenticationService, UserService userService) {
-        this.authenticationService = authenticationService;
-        this.userService = userService;
-    }
+//
+//    public AuthController(AuthenticationService authenticationService, UserService userService) {
+//        this.authenticationService = authenticationService;
+//        this.userService = userService;
+//    }
 
     @GetMapping("/login")
-    public String loginUserForm(Model model){
-        model.addAttribute("loginDTO", new LoginDTO());
+    public String loginUserForm(@ModelAttribute("loginDTO")LoginDTO loginDTO, Model model){
+        model.addAttribute("loginDTO", loginDTO);
         return "user-login";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO request, HttpServletResponse response){
+    public ResponseEntity<?> login(@ModelAttribute("loginDTO")LoginDTO loginDTO, HttpServletResponse response){
         Map<String, String> res = new HashMap<>();
         try {
-            String token = authenticationService.login(request);
-            res.put("message","You have successfully logged in");
-            // todo: replace with header "Set-Cookie": "Authorization: token"
-            res.put("token", token);
+            String token = authenticationService.login(loginDTO);
+            //res.put("message","You have successfully logged in");
+            //res.put("token", token);
 
-            Cookie cookie = new Cookie("Authorization", token);
+            int userId = userService.findUserByEmail(loginDTO.getEmail()).getId();
+            String path = "/api/user/"+userId;
+
+            Cookie cookie = new Cookie(HttpHeaders.AUTHORIZATION, token);
+            cookie.setPath(path);
             response.addCookie(cookie);
 
             HttpHeaders headers = new HttpHeaders();
-            int userId = userService.findUserByEmail(request.getEmail()).getId();
-            headers.add("Location", "/api/user/"+userId);
+
+            headers.add("Location",path );
             headers.add(HttpHeaders.AUTHORIZATION, token);
             ResponseEntity<String> resEnt = new ResponseEntity<String>(headers, HttpStatus.FOUND);
             return resEnt;

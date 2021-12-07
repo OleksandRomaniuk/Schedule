@@ -36,9 +36,8 @@ public class SystemController {
 
     private void createStudents(int number_students) {
         for (int i = 1; i <= number_students; i++) {
-
-            User user = createOneUser(i, UserRole.ADMIN);
-            accountRepository.save(createOneAccount(user, i));
+            //User user = createOneUser(i, UserRole.ADMIN);
+            //accountRepository.save(createOneAccount(user, i));
         }
     }
 

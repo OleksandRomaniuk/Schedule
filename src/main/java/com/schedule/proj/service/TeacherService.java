@@ -3,18 +3,23 @@ package com.schedule.proj.service;
 import com.schedule.proj.exсeption.DuplicateUserEmailException;
 import com.schedule.proj.exсeption.TeacherNotFoundException;
 import com.schedule.proj.exсeption.SubjectNotFoundException;
-import com.schedule.proj.model.Teacher;
-import com.schedule.proj.model.Subject;
+import com.schedule.proj.model.*;
+import com.schedule.proj.model.DTO.StudentGeneralResponseDTO;
+import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
 import com.schedule.proj.repository.SubjectRepository;
+import com.schedule.proj.repository.UserRepository;
+import com.schedule.proj.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.schedule.proj.repository.TeacherRepository;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -27,10 +32,12 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
     private static final Logger logger = LogManager.getLogger();
+    private final JwtProvider jwtProvider;
+    private final  UserRepository userRepository;
     final static Marker MARKER_TEACHER = MarkerManager.getMarker("TeacherService");
 
     public Teacher getTeacher(Long id) {
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
+        Optional<Teacher> optionalTeacher = teacherRepository.findById(Math.toIntExact(id));
 
         if (optionalTeacher.isEmpty())
             throw new TeacherNotFoundException();
@@ -42,9 +49,6 @@ public class TeacherService {
         teacherRepository.delete(teacher);
     }
 
-    public void deleteTeacher(Long id) {
-        teacherRepository.deleteById(id);
-    }
 
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAll();
@@ -63,27 +67,24 @@ public class TeacherService {
         return t;
     }
 
-    @Transactional
-    public Teacher updateTeacher(Teacher newTeacher) {
-        Teacher teacher = teacherRepository.findById((long) newTeacher.getUser().getId())
-                .orElseThrow(TeacherNotFoundException::new);
 
-        if (newTeacher.getUser().getEmail() != null) {
-//            if (teacherRepository.findByEmail(newTeacher.getEmail()).isPresent())
-//                throw new DuplicateUserEmailException();
+    public ResponseEntity<String> updateTeachertByToken(TeacherGeneralResponseDTO dto, HttpServletRequest request) {
 
-            teacher.getUser().setEmail(newTeacher.getUser().getEmail());
+        String token = jwtProvider.getTokenFromRequest(request);
+        String email = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail(email);
+        if(user.getUserRole() == UserRole.TEACHER && user!=null) {
+            Teacher teacher = teacherRepository.getByUserId(user.getId());
+            //user.setFirstName(dto.getFirstname());
+            //user.setLastName(dto.getLastname());
+            teacher.setCathedra(dto.getCathedra());
+            teacher.setFaculty(dto.getFaculty());
+            teacher.setRank(dto.getRank());
+            teacherRepository.save(teacher);
+            return new ResponseEntity<String>(HttpStatus.OK);
         }
+        else return  new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
-        if (newTeacher.getCathedra() != null) {
-            teacher.setCathedra(newTeacher.getCathedra());
-        }
-
-        if (newTeacher.getFaculty() != null) {
-            teacher.setFaculty(newTeacher.getFaculty());
-        }
-
-        return teacher;
     }
 
 }

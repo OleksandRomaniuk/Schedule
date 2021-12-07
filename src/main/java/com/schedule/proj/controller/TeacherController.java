@@ -1,11 +1,16 @@
 package com.schedule.proj.controller;
 
+import com.schedule.proj.model.DTO.StudentGeneralResponseDTO;
+import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
 import com.schedule.proj.model.Teacher;
 import com.schedule.proj.service.SubjectService;
 import com.schedule.proj.service.TeacherService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,21 +40,13 @@ public class TeacherController {
         return teacherService.addTeacher(teacher);
     }
 
-    @PutMapping(consumes = "application/json",
-            produces = "application/json")
-    public Teacher updateTeacher(@RequestBody Teacher teacher) {
-        return teacherService.updateTeacher(teacher);
-    }
 
-    @DeleteMapping(path = "{teacherId}")
-    public void deleteTeacher(@PathVariable Long teacherId) {
-        teacherService.deleteTeacher(teacherId);
-    }
 
-    @PutMapping("{teacherId}/addSubject")
-    public void addSubject(@PathVariable Long teacherId,
-                           @RequestParam Long subjectId) {
-        subjectService.setTeacher(subjectId, teacherId);
+    @Operation(summary = "update teacher by token")
+    @PutMapping("/UpdateTeacher/")
+    ResponseEntity<String> updateTeacherByToken
+            (HttpServletRequest req, @RequestBody TeacherGeneralResponseDTO dto) {
+        return teacherService.updateTeachertByToken(dto,req);
     }
 
 }

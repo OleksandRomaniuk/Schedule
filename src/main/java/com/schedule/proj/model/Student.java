@@ -30,13 +30,12 @@ public class Student {
     @JoinColumn(name = "user_id")
     private User user;
 
-
-
     private String faculty;
 
-
-
     private String speciality;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private Set<Cooperation> cooperation;
 
     @Min(value = 1, message = "Year must not be less than 1")
     @Max(value = 6, message = "Year must not be greater than 6")

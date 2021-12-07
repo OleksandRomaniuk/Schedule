@@ -44,12 +44,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedPage("/api/auth/login")
+                .and()
                 //TODO  chek all permits
 
                 .authorizeRequests().antMatchers(
 
                                                  "/api/registration",
                                                             "/api/auth/login"
+//                        "/api/student/UpdateStudent/",
+//                        "/api/teacher/UpdateTeacher/",
+//                        "/api/subject" ,
+//                        "/api/Cooperation/cooperation",
+//                         "/api/admin/addBD"
                                                  ).permitAll()
 
 
@@ -58,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .anyRequest().permitAll()
                 .and()
                 .apply(jwtConfigurer)
+
         ;
 
     }

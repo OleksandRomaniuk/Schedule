@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -35,7 +36,12 @@ public class JwtFilter extends GenericFilterBean {
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
+//            else{
+//                HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+//                httpResponse.sendRedirect("/");
+//            }
         }catch (InvalidTokenRequestException e){
+
             System.out.println(e.getMessage());
         }
 

@@ -2,11 +2,13 @@ package com.schedule.proj.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class LoginDTO {
     @NotNull
     @NotEmpty

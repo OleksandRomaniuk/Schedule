@@ -2,6 +2,8 @@ package com.schedule.proj.controller;
 
 
 import com.schedule.proj.exсeption.JwtAuthenticationException;
+import com.schedule.proj.logger.ExecutionTime;
+import com.schedule.proj.logger.MethodParamsRes;
 import com.schedule.proj.model.DTO.LoginDTO;
 import com.schedule.proj.model.DTO.UserDTO;
 import com.schedule.proj.model.User;
@@ -45,6 +47,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @ExecutionTime
+    @MethodParamsRes
     public ResponseEntity<?> login(@ModelAttribute("loginDTO")LoginDTO loginDTO, HttpServletResponse response){
         Map<String, String> res = new HashMap<>();
         try {
@@ -53,7 +57,7 @@ public class AuthController {
             //res.put("token", token);
 
             int userId = userService.findUserByEmail(loginDTO.getEmail()).getId();
-            String path = "/api/user/"+userId;
+            String path = "/";
 
             Cookie cookie = new Cookie(HttpHeaders.AUTHORIZATION, token);
             cookie.setPath(path);

@@ -1,5 +1,6 @@
 package com.schedule.proj.controller;
 
+import com.schedule.proj.logger.MethodParamsRes;
 import com.schedule.proj.model.DTO.SubjectGroupDTO;
 import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
 import com.schedule.proj.model.Subject;
@@ -32,6 +33,8 @@ public class SubjectController {
         return subjectService.getAllSubjects();
     }
 
+
+    @MethodParamsRes
     @GetMapping(path = "{subjectId}")
     @ResponseBody
     public Subject getSubject(@PathVariable Integer subjectId) {

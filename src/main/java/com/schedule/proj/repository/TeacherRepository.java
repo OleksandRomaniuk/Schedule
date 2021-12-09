@@ -1,6 +1,7 @@
 package com.schedule.proj.repository;
 
 
+import com.schedule.proj.model.Student;
 import com.schedule.proj.model.Subject;
 import com.schedule.proj.model.Teacher;
 import org.apache.tomcat.jni.User;

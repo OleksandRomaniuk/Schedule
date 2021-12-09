@@ -20,7 +20,8 @@ import java.util.Set;
 //@NoArgsConstructor
 //@AllArgsConstructor
 @Data
-public class Subject {
+public class Subject implements Comparable<Subject> {
+
     @ManyToOne
     // todo: change to teacher_id
     @JoinColumn(name = "teacher_id")
@@ -53,7 +54,7 @@ public class Subject {
 
    // @NotNull
     @Column(name="subject_group")
-    private Integer subjectGroup;
+    private String subjectGroup;
 
    // @NotNull
     @Column(name="subject_faculty")
@@ -69,7 +70,7 @@ public class Subject {
     private String educationFormat;
 
     public Subject(Teacher subjectTeacher, String subjectName, DayOfWeek dayOfWeek,
-                   LocalTime subjectTime, Integer subjectGroup, String subjectFaculty,
+                   LocalTime subjectTime, String subjectGroup, String subjectFaculty,
                    String subjectSpeciality, String educationFormat) {
         this.subjectTeacher = subjectTeacher;
         this.subjectName = subjectName;
@@ -85,5 +86,18 @@ public class Subject {
     }
     public Integer getSubjectId() {
         return subjectId;
+    }
+
+    public Subject(Teacher subjectTeacher, @Size(min = 4, max = 200,
+            message = "Lesson name must be between 4 and 32 characters") String subjectName, @NotNull LocalTime subjectTime, String subjectGroup) {
+        this.subjectTeacher = subjectTeacher;
+        this.subjectName = subjectName;
+        this.subjectTime = subjectTime;
+        this.subjectGroup = subjectGroup;
+    }
+
+    @Override
+    public int compareTo(Subject subject) {
+        return this.subjectName.compareTo(subject.getSubjectName());
     }
 }

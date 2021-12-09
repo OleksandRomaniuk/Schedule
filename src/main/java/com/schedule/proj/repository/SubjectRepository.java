@@ -13,12 +13,13 @@ import java.util.Set;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Integer> {
-   List<Subject> findAllBySubjectTeacher(Teacher teacher);
-   List <Subject> findAllBySubjectGroupAndAndSubjectName(Integer subjectGroup,String subjectName);
+    List<Subject> findAllBySubjectTeacher(Teacher teacher);
 
-   Subject findBySubjectGroupAndSubjectName(Integer subjectGroup,String subjectName);
-   Subject getBySubjectId(int id);
+    List<Subject> findAllBySubjectGroupAndAndSubjectName(Integer subjectGroup, String subjectName);
 
+    Subject findBySubjectGroupAndSubjectName(String subjectGroup, String subjectName);
 
+    Subject getBySubjectId(int id);
 
+    List<Subject> findAllBySubjectName(String name);
 }

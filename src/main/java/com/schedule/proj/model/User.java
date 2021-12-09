@@ -37,23 +37,23 @@ public class User {
     private UserRole userRole;
 
     @Column(unique=true)
-    //@Email(message = "Email should be valid")
+    @Email(message = "Email should be valid")
     private String email;
 
-    // @NotNull
-  //  @Size(min = 10, max = 30,
-  //          message = "First name must be between 10 and 30 characters")
+    @NotNull
+    @Size(min = 10, max = 70,
+            message = "Password must be between 10 and 30 characters")
     private String password;
 
-   // @NotNull
-   // @Size(min = 4, max = 50,
-   //         message = "First name must be between 4 and 32 characters")
+    @NotNull
+    @Size(min = 2, max = 32,
+            message = "First name must be between 4 and 32 characters")
     @Column(name = "first_name")
     private String firstName;
 
- //   @NotNull
-//    @Size(min = 4, max = 32,
-//            message = "Last name must be between 4 and 32 characters")
+    @NotNull
+    @Size(min = 2, max = 32,
+            message = "Last name must be between 4 and 32 characters")
     @Column(name = "last_name")
     private String lastName;
 

@@ -75,8 +75,8 @@ public class TeacherService {
         User user = userRepository.findUserByEmail(email);
         if(user.getUserRole() == UserRole.TEACHER && user!=null) {
             Teacher teacher = teacherRepository.getByUserId(user.getId());
-            user.setFirstName(dto.getFirstname());
-            user.setLastName(dto.getLastname());
+            //user.setFirstName(dto.getFirstname());
+            //user.setLastName(dto.getLastname());
             teacher.setCathedra(dto.getCathedra());
             teacher.setFaculty(dto.getFaculty());
             teacher.setRank(dto.getRank());

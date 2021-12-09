@@ -10,9 +10,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class StudentGeneralResponseDTO {
 
-
-
-
     private  String firstname;
 
     private  String lastname;

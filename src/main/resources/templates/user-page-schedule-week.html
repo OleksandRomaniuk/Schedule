@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-
 <div class="container">
     <div class="row">
         <h1>
@@ -20,7 +19,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <form action="#" th:action="@{/api/user/{id}(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-secondary">
+                        <button type="submit" class="btn btn-light">
                             Home
                         </button>
                     </form>
@@ -34,7 +33,7 @@
                 </li>
                 <li class="nav-item">
                     <form action="#" th:action="@{/api/user/{id}/schedule(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-light">
+                        <button type="submit" class="btn btn-secondary">
                             Schedule
                         </button>
                     </form>
@@ -63,16 +62,72 @@
             </div>
         </div>
     </nav>
-
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">Welcome,</h1>
-            <h3 class="display-5" th:text="${user.firstName + ' ' + user.lastName + ' !'}"></h3>
-        </div>
-    </div>
-
-
+    <br/>
+    <br/>
 </div>
+    <div th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" class="d-flex flex-column justify-content-center">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <div th:each = "day : ${days}">
+                    <th scope="col" colspan="3" th:text="${day}">day</th>
+                </div>
+
+            </tr>
+            <tr>
+                <th scope="col">#</th>
+                <div th:each = "day : ${days}">
+                    <th scope="col">Subject</th>
+                    <th scope="col">Group</th>
+                    <th scope="col">Teacher</th>
+                </div>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each = "slot : ${subjectsSlots}">
+                <th scope="row" th:text="${slot[__${0}__].subjectTime}"></th>
+                <div th:each = "subj : ${slot}">
+                        <td th:text="${subj.subjectName}">-</td>
+                        <td th:text="${subj.subjectGroup}">-</td>
+                        <td th:text="${subj.subjectTeacher?.user?.lastName}">-</td>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${user.userRole == T(com.schedule.proj.model.UserRole).TEACHER}" class="d-flex flex-column justify-content-center">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <div th:each = "day : ${days}">
+                <th scope="col" colspan="3" th:text="${day}">day</th>
+            </div>
+
+        </tr>
+        <tr>
+            <th scope="col">#</th>
+            <div th:each = "day : ${days}">
+                <th scope="col">Subject</th>
+                <th scope="col">Group</th>
+                <th scope="col">Teacher</th>
+            </div>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each = "slot : ${subjectsSlots}">
+            <th scope="row" th:text="${slot[__${0}__].subjectTime}"></th>
+            <div th:each = "subj : ${slot}">
+                <td th:text="${subj.subjectName}">-</td>
+                <td th:text="${subj.subjectGroup}">-</td>
+                <td th:text="${subj.subjectTeacher?.user?.lastName}">-</td>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 
 </body>
 </html>

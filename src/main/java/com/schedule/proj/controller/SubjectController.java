@@ -72,7 +72,7 @@ public class SubjectController {
     }
     @GetMapping("/subjectByWeek")
     public ResponseEntity<?> findsubjectByWeek(HttpServletRequest request,@RequestParam(required = false) String week){
-        return ResponseEntity.ok(subjectService.findStudentubjectByTokenAndWeek( request , week));
+        return ResponseEntity.ok(subjectService.findStudentSubjectByTokenAndWeek( request , week));
     }
 
 

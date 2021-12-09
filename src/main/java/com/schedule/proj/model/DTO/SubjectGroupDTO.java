@@ -8,13 +8,13 @@ public class SubjectGroupDTO {
 
 
 
-    private  Integer group;
+    private  String group;
 
-    public Integer getGroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setGroup(Integer group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 

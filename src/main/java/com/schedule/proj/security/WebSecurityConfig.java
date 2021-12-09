@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -49,15 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .authorizeRequests().antMatchers(
 
                                                  "/api/registration",
-                                                            "/api/auth/login",
-                        "/api/student/UpdateStudent/",
-                        "/api/teacher/UpdateTeacher/",
-                        "/api/subject" ,
-                        "/api/Cooperation/cooperation",
-                         "/api/admin/addBD"
-
-
-
+                                                            "/api/auth/login"
+//                        "/api/student/UpdateStudent/",
+//                        "/api/teacher/UpdateTeacher/",
+//                        "/api/subject" ,
+//                        "/api/Cooperation/cooperation",
+//                         "/api/admin/addBD"
                                                  ).permitAll()
 
 

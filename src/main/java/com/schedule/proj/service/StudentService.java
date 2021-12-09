@@ -8,6 +8,7 @@ import com.schedule.proj.repository.UserRepository;
 import com.schedule.proj.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class StudentService {
 
     public Student createStudent(Student student) {
         Student t = studentRepository.save(student);
-        ThreadContext.put("username", t.getUser().getFirstName() + " " + student.getUser().getLastName());
+        //ThreadContext.put("username", t.getUser().getFirstName() + " " + student.getUser().getLastName());
         // ThreadContext.put("ID", t.getUser().getUserId().toString());
         logger.info(MARKER_STUDENT, "Create student");
         ThreadContext.clearMap();
@@ -68,8 +69,8 @@ public class StudentService {
         if (user.getUserRole() == UserRole.STUDENT && user != null) {
             Student student = studentRepository.getByUserId(user.getId());
             int i = 5;
-            user.setFirstName(dto.getFirstname());
-            user.setLastName(dto.getLastname());
+            //user.setFirstName(dto.getFirstname());
+            //user.setLastName(dto.getLastname());
             student.setStudentYear(dto.getStudentYear());
             student.setFaculty(dto.getFaculty());
             student.setSpeciality(dto.getSpeciality());
@@ -78,9 +79,6 @@ public class StudentService {
         } else return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
     }
-
-
-
 
 }
 

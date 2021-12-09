@@ -46,13 +46,6 @@
                         </button>
                     </form>
                 </li>
-                <li th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" class="nav-item">
-                    <form action="#" th:action="@{/api/user/{id}/subjects(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-light">
-                            Subjects
-                        </button>
-                    </form>
-                </li>
             </ul>
             <div class="justify-content-end">
                 <form action="#" th:action="@{/api/user/login}" method="get">
@@ -63,13 +56,30 @@
             </div>
         </div>
     </nav>
-
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">Welcome,</h1>
-            <h3 class="display-5" th:text="${user.firstName + ' ' + user.lastName + ' !'}"></h3>
+    <br/>
+    <br/>
+    <ul class="list-group">
+        <li class="list-group-item d-flex list-group-item-secondary justify-content-between align-items-center">
+            <div>
+                Subject
+            </div>
+            <span class="badge badge-primary badge-pill">Group</span>
+            <form action="#" th:action="@{/api/user/login}" method="get">
+                <div>
+                    Delete
+                </div>
+            </form>
+        </li>
+        <div th:each = "subj : ${subjects}">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div th:text="${subj.subjectName}">-</div>
+                <span class="badge badge-primary badge-pill" th:text="${subj.subjectGroup}" >-</span>
+                    <a th:href = "@{/api/user/{id1}/deleteSubject/{id2}(id1=${user.id}, id2=${subj.subjectId})}" class="btn btn-danger">
+                        X
+                    </a>
+            </li>
         </div>
-    </div>
+    </ul>
 
 
 </div>

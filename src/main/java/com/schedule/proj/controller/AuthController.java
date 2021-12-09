@@ -55,7 +55,7 @@ public class AuthController {
             //res.put("token", token);
 
             int userId = userService.findUserByEmail(loginDTO.getEmail()).getId();
-            String path = "/api/user/student/"+userId;
+            String path = "/api/user/"+userId;
 
             Cookie cookie = new Cookie(HttpHeaders.AUTHORIZATION, token);
             cookie.setPath(path);

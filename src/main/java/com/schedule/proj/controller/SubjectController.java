@@ -58,6 +58,8 @@ public class SubjectController {
     }
 
     @DeleteMapping(path = "{subjectId}")
+    @ExecutionTime
+    @MethodParamsRes
     public void deleteSubject(@PathVariable Integer subjectId) {
         subjectService.deleteSubject(subjectId);
     }

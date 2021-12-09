@@ -2,6 +2,8 @@ package com.schedule.proj.controller;
 
 
 import com.schedule.proj.exсeption.RegistrationException;
+import com.schedule.proj.logger.ExecutionTime;
+import com.schedule.proj.logger.MethodParamsRes;
 import com.schedule.proj.model.DTO.UserDTO;
 import com.schedule.proj.service.RegistrationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +42,8 @@ public class RegistrationController {
     //method for registration
     @Operation(summary = "method for registration")
     @PostMapping
+    @ExecutionTime
+    @MethodParamsRes
     String registration(@ModelAttribute("userDTO") @Valid UserDTO userDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             HttpHeaders headers = new HttpHeaders();

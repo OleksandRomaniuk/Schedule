@@ -1,6 +1,8 @@
 package com.schedule.proj.controller;
 
 
+import com.schedule.proj.logger.ExecutionTime;
+import com.schedule.proj.logger.MethodParamsRes;
 import com.schedule.proj.model.*;
 import com.schedule.proj.model.DTO.StudentGeneralResponseDTO;
 import com.schedule.proj.model.DTO.SubjectGroupDTO;
@@ -60,6 +62,8 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile/edit")
+    @ExecutionTime
+    @MethodParamsRes
     public String updateUserPageProfileEdit(@ModelAttribute("user") User user,
                                             @PathVariable("id")Long id, Model model,
                                             HttpServletRequest request,
@@ -97,6 +101,8 @@ public class UserController {
     }
 
     @PostMapping("/{id}/add")
+    @ExecutionTime
+    @MethodParamsRes
     public String updateUserPageAddSubject(@ModelAttribute("subject") Subject subject,
                                       @PathVariable("id")Long id, Model model){
         model.addAttribute("user", userService.getUserById(id.intValue()));
@@ -121,6 +127,8 @@ public class UserController {
     }
 
     @PostMapping("/{id}/add/group")
+    @ExecutionTime
+    @MethodParamsRes
     public String updateUserSubject(@ModelAttribute("subject") Subject subject,
                                             @PathVariable("id")Long id, Model model,
                                             HttpServletRequest request){

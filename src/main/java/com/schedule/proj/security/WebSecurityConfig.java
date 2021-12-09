@@ -40,16 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-
                 //виключити csrf захист щоб можна було надсилати POST запити
                 .cors().and().csrf().disable()
                 .sessionManagement()
-
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .accessDeniedPage("/api/auth/login")
                 .and()
                 //TODO  chek all permits
 
@@ -70,8 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .anyRequest().permitAll()
                 .and()
                 .apply(jwtConfigurer)
-
-
         ;
 
     }

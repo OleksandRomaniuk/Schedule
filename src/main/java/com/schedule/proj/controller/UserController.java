@@ -1,26 +1,27 @@
 package com.schedule.proj.controller;
 
 
-import com.schedule.proj.logger.ExecutionTime;
-import com.schedule.proj.logger.MethodParamsRes;
-import com.schedule.proj.model.*;
+import com.schedule.proj.exсeption.RegistrationException;
+import com.schedule.proj.model.DTO.PasswordDTO;
 import com.schedule.proj.model.DTO.StudentGeneralResponseDTO;
 import com.schedule.proj.model.DTO.SubjectGroupDTO;
 import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
+import com.schedule.proj.model.*;
 import com.schedule.proj.service.*;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
 
 @Controller
@@ -45,6 +46,7 @@ public class UserController {
     @GetMapping("/{id}")
     public String getUserPage(@PathVariable("id")Long id, Model model){
         model.addAttribute("user", userService.getUserById(id.intValue()));
+        //model.addAttribute("user", new User());
         return "user-page";
     }
 
@@ -62,8 +64,6 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile/edit")
-    @ExecutionTime
-    @MethodParamsRes
     public String updateUserPageProfileEdit(@ModelAttribute("user") User user,
                                             @PathVariable("id")Long id, Model model,
                                             HttpServletRequest request,
@@ -101,8 +101,6 @@ public class UserController {
     }
 
     @PostMapping("/{id}/add")
-    @ExecutionTime
-    @MethodParamsRes
     public String updateUserPageAddSubject(@ModelAttribute("subject") Subject subject,
                                       @PathVariable("id")Long id, Model model){
         model.addAttribute("user", userService.getUserById(id.intValue()));
@@ -127,8 +125,6 @@ public class UserController {
 //    }
 
     @PostMapping("/{id}/add/group")
-    @ExecutionTime
-    @MethodParamsRes
     public String updateUserSubject(@ModelAttribute("subject") Subject subject,
                                             @PathVariable("id")Long id, Model model,
                                             HttpServletRequest request){
@@ -164,8 +160,41 @@ public class UserController {
         return "user-page-schedule-week";
     }
 
+    @GetMapping("/{id}/subjects")
+    public String getUserAllSubjects(@PathVariable("id")Long id,
+                                     Model model,
+                                     HttpServletRequest request){
+        model.addAttribute("user", userService.getUserById(id.intValue()));
+        model.addAttribute("subjects", subjectService.findStudentubjectByToken(request));
+        //model.addAttribute("subjectDTO", new SubjectGroupDTO(null,null));
+        return "user-page-subjects";
+    }
 
+    @GetMapping("/{id1}/deleteSubject/{id2}")
+    public String deleteSubjectByToken(@PathVariable("id1")Long uid,
+                                       @PathVariable("id2")Long sid,
+                                       Model model, HttpServletRequest request) {
+        Subject s = subjectService.getSubject(sid.intValue());
+        SubjectGroupDTO subjectGroupDTO = new SubjectGroupDTO(s.getSubjectGroup(),s.getSubjectName());
+        cooperationService.deleSybjectforStudent(request , subjectGroupDTO);
+        return "redirect:/api/user/"+uid.toString()+"/subjects";
+    }
 
+    @Operation(summary = "change password")
+    @PutMapping("/changePassword")
+    ResponseEntity<?> changePassword(@RequestBody PasswordDTO dto,
+                                     HttpServletRequest request) {
+
+        Map<String, String> res = new HashMap<>();
+        try {
+            String result = userService.changePassword(request, dto.getOldPassword(), dto.getNewPassword());
+            res.put("message", result);
+            return ResponseEntity.ok(res);
+        } catch (RegistrationException | UsernameNotFoundException e) {
+            res.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
+    }
 
 
 

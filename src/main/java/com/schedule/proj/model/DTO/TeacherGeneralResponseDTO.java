@@ -8,16 +8,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class TeacherGeneralResponseDTO {
 
-
-
-
     private String faculty;
 
     private String cathedra;
 
     private String rank;
-
-
 
     private  String firstname;
 

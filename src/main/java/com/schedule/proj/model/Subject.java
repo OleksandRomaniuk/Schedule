@@ -21,15 +21,14 @@ import java.util.Set;
 //@AllArgsConstructor
 @Data
 public class Subject implements Comparable<Subject> {
-    @JsonIgnore
-    @ManyToMany(mappedBy = "subjectsList", cascade = CascadeType.ALL)
-    private List<Student> studentsList;
 
     @ManyToOne
     // todo: change to teacher_id
     @JoinColumn(name = "teacher_id")
     @JsonIgnore
     private Teacher subjectTeacher;
+
+
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -61,7 +60,8 @@ public class Subject implements Comparable<Subject> {
     @Column(name="subject_faculty")
     private String subjectFaculty;
 
-    //@NotNull
+
+   // @NotNull
     @Column(name="subject_speciality")
     private String subjectSpeciality;
 

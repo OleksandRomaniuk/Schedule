@@ -42,19 +42,6 @@ public class Student {
     @Column(name = "student_year")
     private Integer studentYear;
 
-    @Column(name="subjects_list")
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "student_subject",
-            joinColumns = @JoinColumn(name = "subject_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
-    private Set<Subject> subjectsList;
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "accounts_id")
-    private Accounts accounts;
-
     public Student(String email, String password, String firstName, String lastName,
                    String avatar, String speciality, String faculty, Integer studentYear) {
         this.user = new User(UserRole.STUDENT, email, password, firstName, lastName, avatar);

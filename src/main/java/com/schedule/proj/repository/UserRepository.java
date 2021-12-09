@@ -18,8 +18,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     //@Query("Select t from User t where t.email = ?1")
 
-
-
     @Query("Select user from User user")
     List<User> findAll();
 

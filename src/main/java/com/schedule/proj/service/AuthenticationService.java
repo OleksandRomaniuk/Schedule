@@ -8,7 +8,9 @@ import com.schedule.proj.logger.ExecutionTime;
 import com.schedule.proj.model.DTO.LoginDTO;
 import com.schedule.proj.model.User;
 import com.schedule.proj.repository.UserRepository;
+import com.schedule.proj.security.jwt.CustomUserDetails;
 import com.schedule.proj.security.jwt.JwtProvider;
+import com.schedule.proj.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +52,7 @@ public class AuthenticationService {
         if(user==null){
             throw new AuthenticationException("Email is incorrect");
         }
-
-
-        if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
+       if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     request.getEmail(),
                     request.getPassword()
@@ -60,10 +60,14 @@ public class AuthenticationService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return jwtProvider.generateAuthToken(authentication);
         }
-
         throw new AuthenticationException("Password is incorrect");
     }
-
+    public String logout(HttpServletRequest request, CustomUserDetails user) {
+        String token = jwtProvider.getTokenFromRequest(request);
+        OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getUsername(),token);
+        applicationEventPublisher.publishEvent(logoutEventPublisher);
+        return "You have successfully logout";
+    }
 
     public String checkExpiration(String token) {
         Date expireDateFromToken = jwtProvider.getExpireDateFromToken(token);

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
+
 <div class="container">
     <div class="row">
         <h1>
@@ -15,7 +16,7 @@
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <form action="#" th:action="@{/api/user/{id}(id=${user.id})}" method="get">
@@ -45,7 +46,21 @@
                         </button>
                     </form>
                 </li>
+                <li th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}/subjects(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-light">
+                            Subjects
+                        </button>
+                    </form>
+                </li>
             </ul>
+            <div class="justify-content-end">
+                <form action="#" th:action="@{/api/user/login}" method="get">
+                    <button type="submit" class="btn btn-primary">
+                        Log out
+                    </button>
+                </form>
+            </div>
         </div>
     </nav>
 

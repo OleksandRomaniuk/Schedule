@@ -41,24 +41,19 @@ public class CooperationService {
         Subject subjecttt = subjectRepository.findBySubjectGroupAndSubjectName(dto.getGroup(), dto.getSubjectname());
         User user = userRepository.findUserByEmail(email);
         Student student = studentRepository.getByUserId(user.getId());
+        Cooperation cooperation = cooperationRepository.coopIsPresent(student.getStudentId(), subjecttt.getSubjectId());
+        if(cooperation != null)
+            return "Student already had this subject";
         Cooperation c;
-                c =new Cooperation();
-                c.setStatus(true);
-          c.setStudent(studentRepository.getById((student.getStudentId())));
-         c.setSubject(subjectRepository.getById(subjecttt.getSubjectId()));
+        c =new Cooperation();
+        c.setStatus(true);
+        c.setStudent(studentRepository.getById((student.getStudentId())));
+        c.setSubject(subjectRepository.getById(subjecttt.getSubjectId()));
          cooperationRepository.save(c);
 
         return  "Student add this subject";
     }
 
-
-
-    public Boolean showInformation(HttpServletRequest request,int subjectId){
-        String token = jwtProvider.getTokenFromRequest(request);
-        String email = jwtProvider.getLoginFromToken(token);
-        Student student = studentRepository.getById(userRepository.findUserByEmail(email).getId());
-        return (checkInfo(student.getStudentId(),subjectId));
-    }
     public Boolean checkInfo(int sudentId,int subjectId){
         Cooperation cooperation = cooperationRepository.coopIsPresent(sudentId,subjectId);
         if(cooperation == null)  return false;
@@ -66,7 +61,6 @@ public class CooperationService {
             return true;
         else return false;
     }
-
 
 
     public void deleSybjectforStudent(HttpServletRequest request, SubjectGroupDTO dto) {

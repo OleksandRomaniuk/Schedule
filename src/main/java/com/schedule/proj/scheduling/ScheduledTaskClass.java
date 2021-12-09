@@ -14,28 +14,28 @@ import java.util.Date;
 
 @Component
 public class ScheduledTaskClass {
-
-    private static final Logger log = LoggerFactory.getLogger(ScheduledTaskClass.class);
-
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
-    @Autowired
-    private UserService userService;
-
+//
+//    private static final Logger log = LoggerFactory.getLogger(ScheduledTaskClass.class);
+//
+//    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+//
+//    @Autowired
+//    private UserService userService;
+//
 //    @Scheduled(fixedRate = 3000)
 //    public void reportCurrentTime() {
 //        log.info("The time is now {}", dateFormat.format(new Date()));
 //    }
-
-    @Scheduled(cron = "0 */1 18-20 * * ?")
-    public void scheduleTaskUsingCronExpression() {
-        int availableUsers = userService.getAllUsers().size();
-        log.info("Count of now available users is {}" , availableUsers);
-    }
-
-    @Scheduled(cron = "0 */1 18-20 * * ?")
-    public void scheduleTaskUsingCronExpression2() {
-        userService.evictAllUsers();
-        log.info("Delete users cache");
-    }
+//
+//    @Scheduled(cron = "0 */1 18-20 * * ?")
+//    public void scheduleTaskUsingCronExpression() {
+//        int availableUsers = userService.getAllUsers().size();
+//        log.info("Count of now available users is {}" , availableUsers);
+//    }
+//
+//    @Scheduled(cron = "0 */1 18-20 * * ?")
+//    public void scheduleTaskUsingCronExpression2() {
+//        userService.evictAllUsers();
+//        log.info("Delete users cache");
+//    }
 }

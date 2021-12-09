@@ -10,8 +10,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
-@EnableCaching
 public class ProjApplication {
 
     public static void main(String[] args) {

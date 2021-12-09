@@ -16,9 +16,6 @@ public interface CooperationRepository extends JpaRepository<Cooperation,Integer
 
     @Query("SELECT c FROM Cooperation c WHERE c.student.studentId =:student and c.subject.subjectId =:subject")
     Cooperation  coopIsPresent(@Param("student") int student, @Param("subject") int subject);
-
     List<Cooperation> findAllByStudent_StudentId(Integer i);
-
-
     void deleteAllByStudentAndSubject(Student student, Subject subject);
 }

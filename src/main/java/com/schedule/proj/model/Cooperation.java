@@ -35,9 +35,6 @@ public class Cooperation {
         this.subject = subject;
     }
 
-
-
-
     public Boolean getStatus() {
         return status;
     }

@@ -45,9 +45,6 @@ public class Teacher {
 //    @JsonIgnore
     private Set<Subject> subjects;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "accounts_id")
-    private Accounts accounts;
 
     public Teacher(String email, String password, String firstName, String lastName,
                    String avatar, String faculty, String cathedra, String rank, Set<Subject> subjects) {

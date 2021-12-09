@@ -57,9 +57,6 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-//    @OneToOne (mappedBy = "user")
-//    private Accounts userAccounts;
-
     public User(UserRole userRole,
                 String email,
                 String password,

@@ -9,9 +9,7 @@ import com.schedule.proj.repository.UserRepository;
 import com.schedule.proj.security.jwt.CustomUserDetailsService;
 import com.schedule.proj.security.jwt.JwtConfigurer;
 import com.schedule.proj.security.jwt.JwtProvider;
-import com.schedule.proj.service.AuthenticationService;
-import com.schedule.proj.service.RegistrationService;
-import com.schedule.proj.service.UserService;
+import com.schedule.proj.service.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,14 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
+    private StudentService studentService;
+    @MockBean
+    private TeacherService teacherService;
+    @MockBean
+    private SubjectService subjectService;
+    @MockBean
+    private CooperationService cooperationService;
+    @MockBean
     private UserRepository userRepository;
     @MockBean
     private JwtProvider jwtProvider;
@@ -54,35 +60,10 @@ public class UserControllerTest {
     @Test
     void apiWithoutTokenTest() throws Exception {
 
-        mockMvc.perform(get("/api/user/student/1")
+        mockMvc.perform(get("/api/user/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden());  //403 Access Denied
+                .andExpect(status().is3xxRedirection());  //302 (Access Denied -> Redirect)
     }
 
-//    @Test
-//    void apiWithTokenTest() throws Exception {
-//
-//        String login = "vkd@ukma.edu.ua";
-//        String pass = "Q1W2E3rtyuiop";
-//        LoginDTO loginDTO = new LoginDTO(login,pass);
-//
-//        when(authenticationService.login(loginDTO)).thenReturn("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2a2RAdWttYS5lZHUudWEiLCJyb2xlIjpbeyJhdXRob3JpdHkiOiJTVFVERU5UIn1dLCJpZCI6IjEiLCJpYXQiOjE2Mzg2MTYxOTgsImV4cCI6MTYzOTIyMDk5OH0.s93DGSnvABHGR3BX7LBNkv9QqhgpGYiAaGUd702sFzTMFl04xFAmhNEWqe-0IF4UFzpBUcw3qicN81aCyCzsFg");
-//        when(userRepository.findUserByEmail(login)).thenReturn(new User(UserRole.STUDENT,login,pass,"","",""));
-//
-//        String token = authenticationService.login(loginDTO);
-//
-//        Cookie cookie = new Cookie(HttpHeaders.AUTHORIZATION, token);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//
-//        headers.add(HttpHeaders.AUTHORIZATION, token);
-//
-//        mockMvc.perform(get("/api/user/student/1")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .headers(headers)
-//                .cookie(cookie))
-//                .andExpect(status().isOk());
-//    }
 }

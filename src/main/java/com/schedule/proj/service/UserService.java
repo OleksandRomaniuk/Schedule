@@ -1,12 +1,19 @@
 package com.schedule.proj.service;
 
+import com.schedule.proj.config.NaukmaCacheManager;
 import com.schedule.proj.exсeption.StudentNotFoundException;
 import com.schedule.proj.model.DTO.StudentResponseDTO;
+import com.schedule.proj.model.Student;
 import com.schedule.proj.model.User;
 import com.schedule.proj.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,22 +26,35 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
 
-
+    private static final Logger logger = LogManager.getLogger();
     @Autowired
     ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     UserRepository userRepository;
     @Autowired
     EmailService emailService;
+    @Autowired
+    NaukmaCacheManager naukmaCacheManager;
+
+    public UserService() {
+
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-
-   public User getUserById(int userId) {
+    @Cacheable(value = "user")
+    public User getUserById(int userId) {
+        logger.info("No cache info for user with id = {}", userId);
         return userRepository.findOneById(userId);
     }
+
+    @CacheEvict(value = "user", allEntries = true)
+    public void evictAllUsers() {
+        naukmaCacheManager.evictAllCacheValues("user");
+    }
+
 
     public ResponseEntity<String> updateUser(User userToUpdate, StudentResponseDTO request) {
         String emailNew = request.getEmail();

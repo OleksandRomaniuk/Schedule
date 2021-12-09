@@ -2,20 +2,18 @@ package com.schedule.proj.service;
 
 import com.schedule.proj.exсeption.SubjectNotFoundException;
 import com.schedule.proj.model.*;
-import com.schedule.proj.model.DTO.SubjectGroupDTO;
-import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
 import com.schedule.proj.repository.*;
 import com.schedule.proj.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -36,20 +34,21 @@ public class SubjectService {
     private static final Logger logger = LogManager.getLogger();
     final static Marker MARKER_SUBJECT = MarkerManager.getMarker("SubjectService");
 
+
+    public Subject getSubject(Integer id) {
+        Optional<Subject> optionalSubject = subjectRepository.findById(id);
+        if (optionalSubject.isEmpty())
+            throw new SubjectNotFoundException();
+
+        return optionalSubject.get();
+    }
+
     public Subject createSubject(Subject subject) {
         Subject t = subjectRepository.save(subject);
         logger.info(MARKER_SUBJECT,"Create subject");
         return t;
     }
 
-    public Subject getSubject(Integer id) {
-        Optional<Subject> optionalSubject = subjectRepository.findById(id);
-
-        if (optionalSubject.isEmpty())
-            throw new SubjectNotFoundException();
-
-        return optionalSubject.get();
-    }
 
     @Transactional
     public Subject updateSubject(Subject newSubject) {

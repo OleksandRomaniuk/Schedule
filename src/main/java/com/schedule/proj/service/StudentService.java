@@ -8,6 +8,7 @@ import com.schedule.proj.repository.UserRepository;
 import com.schedule.proj.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -78,9 +79,6 @@ public class StudentService {
         } else return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
     }
-
-
-
 
 }
 

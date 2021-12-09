@@ -55,7 +55,7 @@ public class Subject implements Comparable<Subject> {
 
    // @NotNull
     @Column(name="subject_group")
-    private Integer subjectGroup;
+    private String subjectGroup;
 
    // @NotNull
     @Column(name="subject_faculty")
@@ -70,7 +70,7 @@ public class Subject implements Comparable<Subject> {
     private String educationFormat;
 
     public Subject(Teacher subjectTeacher, String subjectName, DayOfWeek dayOfWeek,
-                   LocalTime subjectTime, Integer subjectGroup, String subjectFaculty,
+                   LocalTime subjectTime, String subjectGroup, String subjectFaculty,
                    String subjectSpeciality, String educationFormat) {
         this.subjectTeacher = subjectTeacher;
         this.subjectName = subjectName;
@@ -89,7 +89,7 @@ public class Subject implements Comparable<Subject> {
     }
 
     public Subject(Teacher subjectTeacher, @Size(min = 4, max = 200,
-            message = "Lesson name must be between 4 and 32 characters") String subjectName, @NotNull LocalTime subjectTime, Integer subjectGroup) {
+            message = "Lesson name must be between 4 and 32 characters") String subjectName, @NotNull LocalTime subjectTime, String subjectGroup) {
         this.subjectTeacher = subjectTeacher;
         this.subjectName = subjectName;
         this.subjectTime = subjectTime;

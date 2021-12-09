@@ -114,17 +114,17 @@ public class UserController {
         return "user-page-profile-add-group";
     }
 
-    @GetMapping("/{id}/add/group")
-    public String getUserPageAddGroup(@ModelAttribute("subject") Subject subject,
-                                      @PathVariable("id")Long id, Model model){
-        model.addAttribute("user", userService.getUserById(id.intValue()));
-        model.addAttribute("subject", subject);
-        model.addAttribute("groups", subjectService.findByName(subject.getSubjectName())
-                .stream()
-                .map(Subject::getSubjectGroup)
-                .toArray());
-        return "user-page-profile-add-group";
-    }
+//    @GetMapping("/{id}/add/group")
+//    public String getUserPageAddGroup(@ModelAttribute("subject") Subject subject,
+//                                      @PathVariable("id")Long id, Model model){
+//        model.addAttribute("user", userService.getUserById(id.intValue()));
+//        model.addAttribute("subject", subject);
+//        model.addAttribute("groups", subjectService.findByName(subject.getSubjectName())
+//                .stream()
+//                .map(Subject::getSubjectGroup)
+//                .toArray());
+//        return "user-page-profile-add-group";
+//    }
 
     @PostMapping("/{id}/add/group")
     @ExecutionTime
@@ -136,7 +136,7 @@ public class UserController {
             try {
                 cooperationService.createCooperation(request, subjectGroupDTO);
             } catch (RuntimeException e) {
-                e.getMessage();
+                System.out.println(e.getMessage());
             } finally {
                 return "redirect:/api/user/"+id.toString()+"/add";
             }

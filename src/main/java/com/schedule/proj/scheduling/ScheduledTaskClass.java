@@ -22,10 +22,10 @@ public class ScheduledTaskClass {
     @Autowired
     private UserService userService;
 
-    @Scheduled(fixedRate = 3000)
-    public void reportCurrentTime() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
-    }
+//    @Scheduled(fixedRate = 3000)
+//    public void reportCurrentTime() {
+//        log.info("The time is now {}", dateFormat.format(new Date()));
+//    }
 
     @Scheduled(cron = "0 */1 18-20 * * ?")
     public void scheduleTaskUsingCronExpression() {

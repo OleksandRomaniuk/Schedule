@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Login User</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!--    <link rel="stylesheet" href="../static/css/admin-table.css">-->
+<!--    <link rel="stylesheet" href="css/style.css" type="text/css" th:href="@{/resources/static/css/style.css}" />-->
+    <link href="http://localhost:8080/css/admin-table.css" rel="stylesheet" />
+</head>
+<body>
+<div th:text="${admin_name}"></div>
+<div class="container">
+<!--    <div class="row">-->
+<!--        <h1>-->
+<!--            <span th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" th:text="#{app.name.student}"></span>-->
+<!--            <span th:if="${user.userRole == T(com.schedule.proj.model.UserRole).TEACHER}" th:text="#{app.name.teacher}"></span>-->
+<!--        </h1>-->
+<!--    </div>-->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-light">
+                            Home
+                        </button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}/profile(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-secondary">
+                            Schedule
+                        </button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}/profile(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-light">
+                            Subjects
+                        </button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}/schedule(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-light">
+                            Teachers
+                        </button>
+                    </form>
+                </li>
+                <li th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}/add(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-light">
+                            Students
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Welcome,</h1>
+            <h3 class="display-5" th:text="${user.firstName + ' ' + user.lastName + ' !'}"></h3>
+        </div>
+    </div> -->
+
+</div>
+
+<table class="table  table-bordered  admin-panel__table">
+    <colgroup>
+        <col>
+        <col>
+    </colgroup>
+    <thead class="thead-dark">
+
+    <th class="admin-table__th-day">Day</th>
+    <th class="admin-panel__table-wrapper">
+        <table class="admin-table__inner-table">
+            <th class="admin-panel__table-time">Time</th>
+            <th class="admin-panel__table-wrapper">
+                <table class="admin-table__inner-table">
+                    <th class="admin-panel__subjects-table-subject-name">Subject</th>
+                    <th class="admin-panel__subjects-table-subject-teacher">Teacher</th>
+                    <th class="admin-panel__subjects-table-subject-group">Group</th>
+                    <th class="admin-panel__subjects-table-subject-weeks">Weeks</th>
+                    <th></th>
+                </table>
+            </th>
+        </table>
+    </th>
+    </thead>
+
+
+    <div>
+        <tr th:each="day: ${days}">
+            <td class="admin-table__day" th:text="${day.name}"></td>
+            <td class="admin-panel__table-wrapper">
+                <table class="admin-table__inner-table">
+                    <tr class="admin-panel__table-time-subject-wrap" th:each="time: ${day.times}">
+                        <td class="admin-panel__table-time  admin-panel__table-cell" th:text="${time.name}"></td>
+                        <td class="admin-panel__table-cell">
+                            <table class="admin-table__inner-table">
+                                <tr class="admin-panel__subjects-table-subject" th:each="subject: ${time.subjects}">
+                                    <td class="admin-panel__subjects-table-subject-name" th:text="${subject.name}"></td>
+                                    <td class="admin-panel__subjects-table-subject-teacher" th:text="${subject.teacher}">subject.teacher</td>
+                                    <td class="admin-panel__subjects-table-subject-group" th:text="${subject.group}"></td>
+                                    <td class="admin-panel__subjects-table-subject-weeks" th:text="${subject.weeks}"></td>
+                                    <td class="admin-panel__subjects-table-subject-buttons">
+                                        <!-- TODO: add submit -->
+                                        <form id="deleteSubj" action="#" th:action="@{/api/subject/delete/{id}(id=${subject.id})}" method="post">
+                                            <button type="submit" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>
+                                        </form>
+<!--                                        <button onclick="deleteSubject(${subject.id})" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
+                                        <form action="#" th:action="@{/api/subject/edit/{id}(id=${subject.id})}" th:object="${subject}" method="get">
+                                            <button type="submit" class="btn  admin-panel__subjects-table-subject-edit-button">Edit</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <!-- <tr class="admin-panel__subjects-table-subject">
+                                    <td class="admin-panel__subjects-table-subject-name">Spring</td>
+                                    <td class="admin-panel__subjects-table-subject-teacher">NotBoublique</td>
+                                    <td class="admin-panel__subjects-table-subject-group">3</td>
+                                    <td class="admin-panel__subjects-table-subject-weeks">2-8,13-15</td>
+                                    <td>
+                                        <button class="admin-panel__subjects-table-subject-edit-button">Edit</button>
+                                        <button class="admin-panel__subjects-table-subject-delete-button">Delete</button>
+                                    </td>
+                                </tr> -->
+                                <tr>
+                                    <td colspan="5" classs="admin-panel__subjects-table-time-add-button-wrap">
+                                        <form action="#" th:action="@{/api/subject/add/}" method="get">
+                                            <button type="submit" class="btn  admin-panel__subjects-table-time-add-button">Add</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </div>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="http://localhost:8080/js/admin-table.js"></script>
+</body>
+</html>

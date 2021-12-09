@@ -18,16 +18,16 @@ INSERT INTO USER (email, password, first_name, last_name, user_role) VALUES
     ('ip@gmail.com', '$2a$10$R2Fb5Qz3svrJwG1GB4fyrOvsdrV3o89QSjfwVE.AVudwJkX750jJ6', 'Ilia', 'Poeta', 'STUDENT');
 INSERT INTO STUDENT (student_id,user_id) VALUES
     (3,5);
-INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id) VALUES
-    ('Spring',0,'08:30:00','2', 1);
-INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id) VALUES
-    ('Бази даних',2,'10:00:00','5', 1);
-INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id) VALUES
-    ('МООП',1,'10:00:00','1', 2);
-INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id) VALUES
-    ('МООП',2,'08:30:00','3', 2);
-INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id) VALUES
-   ('Spring',4,'13:30:00','lection', 1);
+INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id, subject_speciality) VALUES
+    ('Spring',0,'08:30:00','2', 1, 'Software engineering');
+INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id, subject_speciality) VALUES
+    ('Бази даних',2,'10:00:00','5', 1, 'Software engineering');
+INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id, subject_speciality) VALUES
+    ('МООП',1,'10:00:00','1', 2, 'Software engineering');
+INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id, subject_speciality) VALUES
+    ('МООП',2,'08:30:00','3', 2, 'Software engineering');
+INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id, subject_speciality) VALUES
+   ('Spring',4,'13:30:00','lection', 1, 'Software engineering');
 
 -- INSERT INTO COOPERATION (ID,STATUS,STUDENT_ID, SUBJECT_ID) VALUES
 --     (1,null,1,1);

@@ -2,6 +2,8 @@ package com.schedule.proj.controller;
 
 import com.schedule.proj.logger.ExecutionTime;
 import com.schedule.proj.logger.MethodParamsRes;
+import com.schedule.proj.model.DTO.LoginDTO;
+import com.schedule.proj.model.DTO.SubjectDTO;
 import com.schedule.proj.model.DTO.SubjectGroupDTO;
 import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
 import com.schedule.proj.model.Subject;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +28,7 @@ import java.util.List;
 public class SubjectController {
     private final SubjectService subjectService;
     private final CooperationService cooperationService;
-    @Autowired
-    JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
     @GetMapping
     @ResponseBody
@@ -82,12 +84,29 @@ public class SubjectController {
         cooperationService.deleSybjectforStudent(request ,  subjectGroupDTO);
         return ResponseEntity.ok(subjectService.findStudentubjectByToken(request));
     }
+
+    @PostMapping(path = "/delete/{subjectId}")
+    @ExecutionTime
+    @MethodParamsRes
+    public void deleteSubjectPost(@PathVariable Integer subjectId) {
+        subjectService.deleteSubject(subjectId);
+    }
+
     @GetMapping("/subjectByWeek")
     public ResponseEntity<?> findsubjectByWeek(HttpServletRequest request,@RequestParam(required = false) String week){
         return ResponseEntity.ok(subjectService.findStudentSubjectByTokenAndWeek( request , week));
     }
 
+    @GetMapping("/edit/{subjectId}")
+    public String editSubject(@ModelAttribute("subject") SubjectDTO subject, Model model){
+        model.addAttribute("subject", subject);
+        return "subject-edit";
+    }
 
-
+    @GetMapping("/add")
+    public String addSubject(@ModelAttribute("loginDTO") LoginDTO loginDTO, Model model){
+        model.addAttribute("loginDTO", loginDTO);
+        return "subject-add";
+    }
 
 }

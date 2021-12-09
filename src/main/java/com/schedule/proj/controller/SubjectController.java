@@ -1,5 +1,6 @@
 package com.schedule.proj.controller;
 
+import com.schedule.proj.logger.ExecutionTime;
 import com.schedule.proj.logger.MethodParamsRes;
 import com.schedule.proj.model.DTO.SubjectGroupDTO;
 import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
@@ -43,11 +44,15 @@ public class SubjectController {
 
     @PostMapping
     @ResponseBody
+    @ExecutionTime
+    @MethodParamsRes
     public Subject addSubject(@RequestBody @Valid Subject subject) {
         return subjectService.createSubject(subject);
     }
 
     @PutMapping(path = "{subjectId}")
+    @ExecutionTime
+    @MethodParamsRes
     public Subject updateSubject(@RequestBody Subject subject) {
         return subjectService.updateSubject(subject);
     }
@@ -65,6 +70,8 @@ public class SubjectController {
         return ResponseEntity.ok(subjectService.findTeachersSubjectByToken(request));
     }
     @GetMapping("/studentSubject")
+    @ExecutionTime
+    @MethodParamsRes
     public ResponseEntity<?> findTStudentSubjectByToken(HttpServletRequest request){
         return ResponseEntity.ok(subjectService.findStudentubjectByToken(request));
     }

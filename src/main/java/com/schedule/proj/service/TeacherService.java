@@ -36,7 +36,7 @@ public class TeacherService {
     private final  UserRepository userRepository;
     final static Marker MARKER_TEACHER = MarkerManager.getMarker("TeacherService");
 
-    public Teacher getTeacher(Long id) {
+    public Teacher getTeacher(Integer id) {
         Optional<Teacher> optionalTeacher = teacherRepository.findById(Math.toIntExact(id));
 
         if (optionalTeacher.isEmpty())

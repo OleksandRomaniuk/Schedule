@@ -1,0 +1,55 @@
+.admin-table__th-day {
+    width: 10%;
+}
+
+.admin-table__inner-table {
+    width: 100%;
+    margin:0;
+    padding: 0;
+    border-collapse: collapse;
+}
+
+.admin-panel__table-cell {
+    margin:0;
+    padding: 0;
+}
+
+.admin-panel__table-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+.admin-panel__table {
+    border-collapse: collapse;
+}
+
+.admin-panel__table-time {
+    width: 10%;
+}
+
+.admin-panel__subjects-table-subject-name {
+    width: 30%;
+}
+
+.admin-panel__subjects-table-subject-teacher {
+
+    width: 30%;
+}
+
+.admin-panel__subjects-table-subject-group {
+    width: 10%;
+}
+
+.admin-panel__subjects-table-subject-weeks {
+    width: 10%;
+}
+
+.admin-panel__subjects-table-subject-buttons {
+    /* display: flex; */
+    /* justify-content: space-around; */
+}
+
+.admin-panel__subjects-table-time-add-button-wrap {
+    /* display: flex;
+    justify-content: space-around; */
+}

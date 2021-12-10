@@ -1,0 +1,11 @@
+.edit-subject__form {
+    /* display: flex;
+    flex-direction: column;
+    width: 100%; */
+    margin-top: 100px;
+}
+
+.edit-subject__form_input {
+    /* width: 50%;
+    justify-content: center; */
+}

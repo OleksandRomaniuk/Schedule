@@ -1,5 +1,7 @@
 package com.schedule.proj.controller;
 
+import com.schedule.proj.logger.ExecutionTime;
+import com.schedule.proj.logger.MethodParamsRes;
 import com.schedule.proj.model.DTO.StudentGeneralResponseDTO;
 import com.schedule.proj.model.DTO.TeacherGeneralResponseDTO;
 import com.schedule.proj.model.Teacher;
@@ -29,13 +31,15 @@ public class TeacherController {
 
     @GetMapping(path = "{teacherId}")
     @ResponseBody
-    public Teacher getTeacher(@PathVariable Long teacherId) {
+    public Teacher getTeacher(@PathVariable Integer teacherId) {
         return teacherService.getTeacher(teacherId);
     }
 
     @PostMapping(consumes = "application/json",
             produces = "application/json")
     @ResponseBody
+    @ExecutionTime
+    @MethodParamsRes
     public Teacher addTeacher(@RequestBody @Valid Teacher teacher) {
         return teacherService.addTeacher(teacher);
     }
@@ -44,6 +48,8 @@ public class TeacherController {
 
     @Operation(summary = "update teacher by token")
     @PutMapping("/UpdateTeacher/")
+    @ExecutionTime
+    @MethodParamsRes
     ResponseEntity<String> updateTeacherByToken
             (HttpServletRequest req, @RequestBody TeacherGeneralResponseDTO dto) {
         return teacherService.updateTeachertByToken(dto,req);

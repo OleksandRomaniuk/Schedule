@@ -2,6 +2,9 @@ package com.schedule.proj.service;
 
 import com.schedule.proj.exсeption.SubjectNotFoundException;
 import com.schedule.proj.model.*;
+import com.schedule.proj.model.DTO.ScheduleDayDTO;
+import com.schedule.proj.model.DTO.ScheduleTimeDTO;
+import com.schedule.proj.model.DTO.SubjectDTO;
 import com.schedule.proj.repository.*;
 import com.schedule.proj.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +35,12 @@ public class SubjectService {
     private static final Logger logger = LogManager.getLogger();
     final static Marker MARKER_SUBJECT = MarkerManager.getMarker("SubjectService");
 
+
+    public SubjectDTO getSubjectDTO(Integer id) {
+        Subject subj = getSubject(id);
+        return new SubjectDTO(subj.getSubjectId(), subj.getSubjectName(), subj.getSubjectTeacher(), subj.getSubjectGroup(), convertToWeeks(subj.getWeeks()),
+                subj.getSubjectTime().toString(), subj.getDayOfWeek(), subj.getSubjectFaculty(), subj.getSubjectSpeciality(), subj.getEducationFormat());
+    }
 
     public Subject getSubject(Integer id) {
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
@@ -69,6 +76,22 @@ public class SubjectService {
 
         if (newSubject.getSubjectGroup() != null) {
             subject.setSubjectGroup(newSubject.getSubjectGroup());
+        }
+
+        if (newSubject.getWeeks() != null) {
+            subject.setWeeks(newSubject.getWeeks());
+        }
+
+        if (newSubject.getSubjectTeacher() != null) {
+            subject.setSubjectTeacher(newSubject.getSubjectTeacher());
+        }
+
+        if (newSubject.getSubjectSpeciality() != null) {
+            subject.setSubjectSpeciality(newSubject.getSubjectSpeciality());
+        }
+
+        if (newSubject.getSubjectFaculty() != null) {
+            subject.setSubjectFaculty(newSubject.getSubjectFaculty());
         }
 
         return subject;
@@ -166,4 +189,82 @@ public class SubjectService {
 
     }
 
+    public List<Subject> findSubjectsBySpeciality(String speciality) {
+        return subjectRepository.findAllBySubjectSpeciality(speciality);
+    }
+
+    public List<ScheduleDayDTO> getScheduleDaysBySpecility(String speciality) {
+        List<Subject> subjects = findSubjectsBySpeciality(speciality);
+        List<ScheduleDayDTO> resDays = new LinkedList<>();
+        resDays.add(getSubjectsByDay(subjects, DayOfWeek.MONDAY));
+        resDays.add(getSubjectsByDay(subjects, DayOfWeek.TUESDAY));
+        resDays.add(getSubjectsByDay(subjects, DayOfWeek.WEDNESDAY));
+        resDays.add(getSubjectsByDay(subjects, DayOfWeek.THURSDAY));
+        resDays.add(getSubjectsByDay(subjects, DayOfWeek.FRIDAY));
+        return resDays;
+    }
+
+    private ScheduleDayDTO getSubjectsByDay(List<Subject> subjects, DayOfWeek day) {
+        LinkedList<ScheduleTimeDTO> res = new LinkedList<>();
+        res.add(getSubjectsByTime(subjects, day, LocalTime.of(8, 30, 0)));
+        res.add(getSubjectsByTime(subjects, day, LocalTime.of(10, 0, 0)));
+        res.add(getSubjectsByTime(subjects, day, LocalTime.of(11, 40, 0)));
+        res.add(getSubjectsByTime(subjects, day, LocalTime.of(13, 30, 0)));
+        res.add(getSubjectsByTime(subjects, day, LocalTime.of(15, 0, 0)));
+        res.add(getSubjectsByTime(subjects, day, LocalTime.of(16, 30, 0)));
+        res.add(getSubjectsByTime(subjects, day, LocalTime.of(18, 0, 0)));
+        return new ScheduleDayDTO(day, res);
+    }
+
+    private ScheduleTimeDTO getSubjectsByTime(List<Subject> subjects, DayOfWeek day, LocalTime time) {
+        List<SubjectDTO> subjectsByTime = subjects
+                .stream()
+                .filter(s -> s.getDayOfWeek().equals(day) && s.getSubjectTime().equals(time))
+                .map(x -> new SubjectDTO(
+                        x.getSubjectId(),
+                        x.getSubjectName(),
+                        x.getSubjectTeacher(),
+                        x.getSubjectGroup(), convertToWeeks(x.getWeeks()),
+                        x.getSubjectTime().toString(),
+                        day,
+                        // todo: add params!!!
+                        x.getSubjectFaculty(),
+                        x.getSubjectSpeciality(),
+                        x.getEducationFormat()))
+                .collect(Collectors.toList());
+        return new ScheduleTimeDTO(time.getHour() + ":" + "00", subjectsByTime);
+    }
+
+    private static String convertToWeeks(Collection<Integer> weeks) {
+        if (weeks.isEmpty())
+            return "";
+
+        List<Integer> sorted = weeks.stream().sorted().collect(Collectors.toList());
+
+        if (sorted.size() == 1)
+            return sorted.get(0).toString();
+
+        int head = sorted.get(0);
+        int tail = sorted.get(1);
+
+        LinkedList<String> resStr = new LinkedList<>();
+
+        for (int i = 1; i < weeks.size(); ++i) {
+            if (sorted.get(i) - tail > 1) {
+                if (head == tail)
+                    resStr.add(head + "");
+                else
+                    resStr.add(head + "-" + tail);
+                head = sorted.get(i);
+            }
+            tail = sorted.get(i);
+        }
+
+        if (head == tail)
+            resStr.add(head + "");
+        else
+            resStr.add(head + "-" + tail);
+
+        return String.join(",", resStr);
+    }
 }

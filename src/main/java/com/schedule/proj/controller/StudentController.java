@@ -1,6 +1,8 @@
 package com.schedule.proj.controller;
 
 import com.schedule.proj.exсeption.InvalidStudentException;
+import com.schedule.proj.logger.ExecutionTime;
+import com.schedule.proj.logger.MethodParamsRes;
 import com.schedule.proj.model.DTO.StudentGeneralResponseDTO;
 import com.schedule.proj.model.Student;
 import com.schedule.proj.repository.StudentRepository;
@@ -35,6 +37,8 @@ public class StudentController {
     @PostMapping(consumes = "application/json",
             produces = "application/json")
     @ResponseBody
+    @ExecutionTime
+    @MethodParamsRes
     public Student addStudent(@RequestBody @Valid Student student) {
         return studentService.addStudent(student);
     }
@@ -42,12 +46,16 @@ public class StudentController {
 
 
     @DeleteMapping(path = "{studentId}")
+    @ExecutionTime
+    @MethodParamsRes
     public void deleteStudent(@PathVariable Integer studentId) {
         studentService.deleteStudent(studentId);
     }
 
     @Operation(summary = "update student by token")
     @PutMapping("/UpdateStudent/")
+    @ExecutionTime
+    @MethodParamsRes
     ResponseEntity<String> updateStudentByToken
             (HttpServletRequest req, @RequestBody StudentGeneralResponseDTO dto) {
         return studentService.updateStudentByToken(dto,req);

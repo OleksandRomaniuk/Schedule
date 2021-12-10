@@ -34,11 +34,6 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-//
-//    public AuthController(AuthenticationService authenticationService, UserService userService) {
-//        this.authenticationService = authenticationService;
-//        this.userService = userService;
-//    }
 
     @GetMapping("/login")
     public String loginUserForm(@ModelAttribute("loginDTO")LoginDTO loginDTO, Model model){
@@ -47,43 +42,42 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@ModelAttribute("loginDTO")LoginDTO loginDTO, HttpServletResponse response){
+    public String login(@ModelAttribute("loginDTO")LoginDTO loginDTO,
+                                   HttpServletResponse response){
         Map<String, String> res = new HashMap<>();
         try {
             String token = authenticationService.login(loginDTO);
-            //res.put("message","You have successfully logged in");
-            //res.put("token", token);
 
             int userId = userService.findUserByEmail(loginDTO.getEmail()).getId();
             String path = "/api/user/"+userId;
 
             Cookie cookie = new Cookie(HttpHeaders.AUTHORIZATION, token);
-            cookie.setPath(path);
+            //cookie.setPath(path);
+            cookie.setPath("/");
+
             response.addCookie(cookie);
 
-            HttpHeaders headers = new HttpHeaders();
+//            HttpHeaders headers = new HttpHeaders();
+//
+//            headers.add("Location",path );
+//            headers.add(HttpHeaders.AUTHORIZATION, token);
+//            ResponseEntity<String> resEnt = new ResponseEntity<String>(headers, HttpStatus.FOUND);
 
-            headers.add("Location",path );
-            headers.add(HttpHeaders.AUTHORIZATION, token);
-            ResponseEntity<String> resEnt = new ResponseEntity<String>(headers, HttpStatus.FOUND);
-            return resEnt;
+            //return "redirect:" + path;
+            return "redirect:/api/user/profile";
             //return ResponseEntity.ok(res);
         }catch (AuthenticationException ex) {
-            res.put("message", ex.getMessage());
-            return ResponseEntity.badRequest().body(res);
+            //res.put("message", ex.getMessage());
+            //return ResponseEntity.badRequest().body(res);
+            return "user-login";
         }catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseEntity.badRequest().body(res);
+            return "user-login";
+            //return ResponseEntity.badRequest().body(res);
         }
 
     }
-    @PutMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request, @CurrentUser CustomUserDetails user){
-        Map<String, String> res = new HashMap<>();
-        String message = authenticationService.logout(request, user);
-        res.put("message", message);
-        return ResponseEntity.ok(res);
-    }
+
 
     @PostMapping("/check")
     public ResponseEntity<?> checkTokenExpire(@RequestBody Map<String,String> request){
@@ -96,6 +90,12 @@ public class AuthController {
             res.put("message",e.getMessage());
             return ResponseEntity.status(401).body(res);
         }
+    }
+
+    @GetMapping("/reset")
+    public String resetPassword(Model model){
+        model.addAttribute("loginDTO", new LoginDTO());
+        return "user-reset";
     }
 
 }

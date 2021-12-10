@@ -28,8 +28,6 @@ public class Subject implements Comparable<Subject> {
     @JsonIgnore
     private Teacher subjectTeacher;
 
-
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="subject_id")
@@ -72,6 +70,20 @@ public class Subject implements Comparable<Subject> {
     public Subject(Teacher subjectTeacher, String subjectName, DayOfWeek dayOfWeek,
                    LocalTime subjectTime, String subjectGroup, String subjectFaculty,
                    String subjectSpeciality, String educationFormat) {
+        this.subjectTeacher = subjectTeacher;
+        this.subjectName = subjectName;
+        this.dayOfWeek = dayOfWeek;
+        this.subjectTime = subjectTime;
+        this.subjectGroup = subjectGroup;
+        this.subjectFaculty = subjectFaculty;
+        this.subjectSpeciality = subjectSpeciality;
+        this.educationFormat = educationFormat;
+    }
+
+    public Subject(Integer subjectId, Teacher subjectTeacher, String subjectName, DayOfWeek dayOfWeek,
+                   LocalTime subjectTime, String subjectGroup, String subjectFaculty,
+                   String subjectSpeciality, String educationFormat) {
+        this.subjectId = subjectId;
         this.subjectTeacher = subjectTeacher;
         this.subjectName = subjectName;
         this.dayOfWeek = dayOfWeek;

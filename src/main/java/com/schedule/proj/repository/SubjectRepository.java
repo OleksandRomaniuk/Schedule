@@ -1,5 +1,6 @@
 package com.schedule.proj.repository;
 
+import com.schedule.proj.model.Speciality;
 import com.schedule.proj.model.Student;
 import com.schedule.proj.model.Subject;
 import com.schedule.proj.model.Teacher;
@@ -18,6 +19,8 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
     List<Subject> findAllBySubjectGroupAndAndSubjectName(Integer subjectGroup, String subjectName);
 
     Subject findBySubjectGroupAndSubjectName(String subjectGroup, String subjectName);
+
+    List<Subject> findAllBySubjectSpeciality(String speciality);
 
     Subject getBySubjectId(int id);
 

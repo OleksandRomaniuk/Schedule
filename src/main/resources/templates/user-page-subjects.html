@@ -20,7 +20,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <form action="#" th:action="@{/api/user/{id}(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-secondary">
+                        <button type="submit" class="btn btn-light">
                             Home
                         </button>
                     </form>
@@ -46,9 +46,23 @@
                         </button>
                     </form>
                 </li>
+                <li class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}/subjects(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-secondary">
+                            Subjects
+                        </button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form action="#" th:action="@{/api/user/{id}/changePassword(id=${user.id})}" method="get">
+                        <button type="submit" class="btn btn-light">
+                            Reset Password
+                        </button>
+                    </form>
+                </li>
             </ul>
             <div class="justify-content-end">
-                <form action="#" th:action="@{/api/user/login}" method="get">
+                <form action="#" th:action="@{/api/user/{id}/logout(id=${user.id})}" method="post">
                     <button type="submit" class="btn btn-primary">
                         Log out
                     </button>
@@ -64,7 +78,7 @@
                 Subject
             </div>
             <span class="badge badge-primary badge-pill">Group</span>
-            <form action="#" th:action="@{/api/user/login}" method="get">
+            <form th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" action="#" th:action="@{/api/user/login}" method="get">
                 <div>
                     Delete
                 </div>
@@ -74,7 +88,7 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div th:text="${subj.subjectName}">-</div>
                 <span class="badge badge-primary badge-pill" th:text="${subj.subjectGroup}" >-</span>
-                    <a th:href = "@{/api/user/{id1}/deleteSubject/{id2}(id1=${user.id}, id2=${subj.subjectId})}" class="btn btn-danger">
+                    <a th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" th:href = "@{/api/user/{id1}/deleteSubject/{id2}(id1=${user.id}, id2=${subj.subjectId})}" class="btn btn-danger">
                         X
                     </a>
             </li>

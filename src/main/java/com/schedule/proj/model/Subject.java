@@ -28,8 +28,6 @@ public class Subject implements Comparable<Subject> {
     @JsonIgnore
     private Teacher subjectTeacher;
 
-
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="subject_id")

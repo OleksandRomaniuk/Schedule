@@ -31,7 +31,7 @@ public class TeacherController {
 
     @GetMapping(path = "{teacherId}")
     @ResponseBody
-    public Teacher getTeacher(@PathVariable Long teacherId) {
+    public Teacher getTeacher(@PathVariable Integer teacherId) {
         return teacherService.getTeacher(teacherId);
     }
 

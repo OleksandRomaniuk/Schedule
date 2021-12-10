@@ -37,9 +37,10 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     EmailService emailService;
+    @Autowired
     PasswordService passwordService;
+    @Autowired
     JwtProvider jwtProvider;
-
 
     public UserService() {
 
@@ -53,6 +54,15 @@ public class UserService {
         return userRepository.findOneById(userId);
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    public User getUserByRequest(HttpServletRequest request) {
+        String token = jwtProvider.getTokenFromRequest(request);
+        String email =jwtProvider.getLoginFromToken(token);
+        return userRepository.findUserByEmail(email);
+    }
 
     public ResponseEntity<String> updateUser(User userToUpdate, StudentResponseDTO request) {
         String emailNew = request.getEmail();

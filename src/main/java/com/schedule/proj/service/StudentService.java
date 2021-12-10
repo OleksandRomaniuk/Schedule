@@ -37,22 +37,12 @@ public class StudentService {
         ThreadContext.clearMap();
         return t;
     }
-
-
-    public void deleteStudent(Student student) {
-        studentRepository.delete(student);
-    }
-
     public void deleteStudent(Integer id) {
         studentRepository.deleteById(id);
     }
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
-    }
-
-    public long countStudents() {
-        return studentRepository.count();
     }
 
     public Student addStudent(Student student) {

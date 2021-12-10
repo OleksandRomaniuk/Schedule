@@ -1,7 +1,7 @@
 INSERT INTO USER (email, password, first_name, last_name, user_role) VALUES
-    ('vkd@ukma.edu.ua', '$2a$10$7SreZc.eTO3bKTcVPgS9c.Q662JnCDqn2ybx/Vdw53e7OCOEsQrku', 'Ivan', 'Maister', 'STUDENT');
-INSERT INTO STUDENT (student_id,user_id) VALUES
-    (1,1);
+    ('ivanmaister7@gmail.com', '$2a$10$7SreZc.eTO3bKTcVPgS9c.Q662JnCDqn2ybx/Vdw53e7OCOEsQrku', 'Ivan', 'Maister', 'STUDENT');
+INSERT INTO STUDENT (student_id,FACULTY,SPECIALITY, STUDENT_YEAR,user_id) VALUES
+    (1,'FI','SoftwareEngineer',2,1);
 INSERT INTO USER (email, password, first_name, last_name, user_role) VALUES
     ('vk@ukma.edu.ua', '$2a$10$7SreZc.eTO3bKTcVPgS9c.Q662JnCDqn2ybx/Vdw53e7OCOEsQrku', 'Andriy', 'Glubovets', 'TEACHER');
 INSERT INTO TEACHER (teacher_id,user_id) VALUES
@@ -29,8 +29,8 @@ INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teach
 INSERT INTO SUBJECT (subject_name,day_of_week,subject_time, subject_group, teacher_id, subject_speciality) VALUES
    ('Spring',4,'13:30:00','lection', 1, 'SoftwareEngineer');
 
--- INSERT INTO COOPERATION (ID,STATUS,STUDENT_ID, SUBJECT_ID) VALUES
---     (1,null,1,1);
+ INSERT INTO COOPERATION (ID,STATUS,STUDENT_ID, SUBJECT_ID) VALUES
+    (1,true,1,1);
 -- INSERT INTO COOPERATION (ID,STATUS,STUDENT_ID, SUBJECT_ID) VALUES
 --     (2,null,1,2);
 -- INSERT INTO COOPERATION (ID,STATUS,STUDENT_ID, SUBJECT_ID) VALUES

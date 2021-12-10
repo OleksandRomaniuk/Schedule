@@ -1,5 +1,8 @@
 package com.schedule.proj.model.DTO;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class PasswordDTO {
 
     private String oldPassword;

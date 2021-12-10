@@ -5,6 +5,7 @@ import com.schedule.proj.exсeption.RegistrationException;
 import com.schedule.proj.model.DTO.*;
 import com.schedule.proj.model.*;
 import com.schedule.proj.security.jwt.CustomUserDetails;
+import com.schedule.proj.security.jwt.JwtProvider;
 import com.schedule.proj.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
@@ -27,6 +28,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    JwtProvider jwtProvider;
     @Autowired
     StudentService studentService;
 
@@ -52,6 +55,14 @@ public class UserController {
     @GetMapping("/{id}/profile")
     public String getUserPageProfile(@PathVariable("id")Long id, Model model){
         model.addAttribute("user", userService.getUserById(id.intValue()));
+        return "user-page-profile";
+    }
+
+    @GetMapping("/profile")
+    public String getUserPageProfile(@CookieValue("Authorization") String token, Model model){
+        String userLogin = jwtProvider.getLoginFromToken(token);
+        User user = userService.findUserByEmail(userLogin);
+        model.addAttribute("user", userService.getUserById(user.getId()));
         return "user-page-profile";
     }
 

@@ -52,7 +52,9 @@ public class AuthController {
             String path = "/api/user/"+userId;
 
             Cookie cookie = new Cookie(HttpHeaders.AUTHORIZATION, token);
-            cookie.setPath(path);
+            //cookie.setPath(path);
+            cookie.setPath("/");
+
             response.addCookie(cookie);
 
 //            HttpHeaders headers = new HttpHeaders();
@@ -61,7 +63,8 @@ public class AuthController {
 //            headers.add(HttpHeaders.AUTHORIZATION, token);
 //            ResponseEntity<String> resEnt = new ResponseEntity<String>(headers, HttpStatus.FOUND);
 
-            return "redirect:" + path;
+            //return "redirect:" + path;
+            return "redirect:/api/user/profile";
             //return ResponseEntity.ok(res);
         }catch (AuthenticationException ex) {
             //res.put("message", ex.getMessage());

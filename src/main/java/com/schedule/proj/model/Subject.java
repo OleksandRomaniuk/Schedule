@@ -82,6 +82,20 @@ public class Subject implements Comparable<Subject> {
         this.educationFormat = educationFormat;
     }
 
+    public Subject(Integer subjectId, Teacher subjectTeacher, String subjectName, DayOfWeek dayOfWeek,
+                   LocalTime subjectTime, String subjectGroup, String subjectFaculty,
+                   String subjectSpeciality, String educationFormat) {
+        this.subjectId = subjectId;
+        this.subjectTeacher = subjectTeacher;
+        this.subjectName = subjectName;
+        this.dayOfWeek = dayOfWeek;
+        this.subjectTime = subjectTime;
+        this.subjectGroup = subjectGroup;
+        this.subjectFaculty = subjectFaculty;
+        this.subjectSpeciality = subjectSpeciality;
+        this.educationFormat = educationFormat;
+    }
+
     public Subject() {
     }
     public Integer getSubjectId() {

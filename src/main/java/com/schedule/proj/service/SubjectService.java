@@ -36,6 +36,12 @@ public class SubjectService {
     final static Marker MARKER_SUBJECT = MarkerManager.getMarker("SubjectService");
 
 
+    public SubjectDTO getSubjectDTO(Integer id) {
+        Subject subj = getSubject(id);
+        return new SubjectDTO(subj.getSubjectId(), subj.getSubjectName(), subj.getSubjectTeacher(), subj.getSubjectGroup(), convertToWeeks(subj.getWeeks()),
+                subj.getSubjectTime().toString(), subj.getDayOfWeek(), subj.getSubjectFaculty(), subj.getSubjectSpeciality(), subj.getEducationFormat());
+    }
+
     public Subject getSubject(Integer id) {
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
         if (optionalSubject.isEmpty())
@@ -70,6 +76,22 @@ public class SubjectService {
 
         if (newSubject.getSubjectGroup() != null) {
             subject.setSubjectGroup(newSubject.getSubjectGroup());
+        }
+
+        if (newSubject.getWeeks() != null) {
+            subject.setWeeks(newSubject.getWeeks());
+        }
+
+        if (newSubject.getSubjectTeacher() != null) {
+            subject.setSubjectTeacher(newSubject.getSubjectTeacher());
+        }
+
+        if (newSubject.getSubjectSpeciality() != null) {
+            subject.setSubjectSpeciality(newSubject.getSubjectSpeciality());
+        }
+
+        if (newSubject.getSubjectFaculty() != null) {
+            subject.setSubjectFaculty(newSubject.getSubjectFaculty());
         }
 
         return subject;
@@ -198,10 +220,17 @@ public class SubjectService {
         List<SubjectDTO> subjectsByTime = subjects
                 .stream()
                 .filter(s -> s.getDayOfWeek().equals(day) && s.getSubjectTime().equals(time))
-                .map(x -> new SubjectDTO(x.getSubjectId().toString(),
+                .map(x -> new SubjectDTO(
+                        x.getSubjectId(),
                         x.getSubjectName(),
-                        x.getSubjectTeacher().getUser().getFirstName() + " " + x.getSubjectTeacher().getUser().getLastName(),
-                        x.getSubjectGroup(), convertToWeeks(x.getWeeks())))
+                        x.getSubjectTeacher(),
+                        x.getSubjectGroup(), convertToWeeks(x.getWeeks()),
+                        x.getSubjectTime().toString(),
+                        day,
+                        // todo: add params!!!
+                        x.getSubjectFaculty(),
+                        x.getSubjectSpeciality(),
+                        x.getEducationFormat()))
                 .collect(Collectors.toList());
         return new ScheduleTimeDTO(time.getHour() + ":" + "00", subjectsByTime);
     }

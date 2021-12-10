@@ -14,3 +14,33 @@ $('#deleteSubj').on('click', function(e) {
         }
     })
 });
+
+function deleteSubject(id) {
+    console.log("here");
+    $.ajax({
+        url: "localhost:8080/api/subject/delete/" + id,
+        type: "post",
+        success: function() {
+            // Do something with the response.
+            // Might want to check for errors here.
+            location.reload();
+        }, error: function(error) {
+            // Here you can handle exceptions thrown by the server or your controller.
+        }
+    });
+}
+
+function redirectSpec(sp) {
+    console.log("here");
+    $.ajax({
+        url: "http://localhost:8080/api/admin/schedule?speciality=" + sp,
+        type: "get",
+        success: function() {
+            // Do something with the response.
+            // Might want to check for errors here.
+            location.reload();
+        }, error: function(error) {
+            // Here you can handle exceptions thrown by the server or your controller.
+        }
+    });
+}

@@ -40,14 +40,14 @@ public class AdminController {
     }
 
     @GetMapping("/schedule")
-    public String loginUserForm(@CookieValue("Authorization") String token, Model model){
+    public String loginUserForm(@CookieValue("Authorization") String token, Model model,
+                                @RequestParam String speciality){
         String userLogin = jwtProvider.getLoginFromToken(token);
         User user = userService.findUserByEmail(userLogin);
 
         model.addAttribute("user", user);
 //        return "user-page";
-        model.addAttribute("admin_name", "Anthony");
-        model.addAttribute("days", subjectService.getScheduleDaysBySpecility("Software engineering"));
+        model.addAttribute("days", subjectService.getScheduleDaysBySpecility(speciality));
         return "admin-schedule";
     }
 

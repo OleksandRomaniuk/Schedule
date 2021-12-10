@@ -68,6 +68,21 @@
     </div> -->
 
 </div>
+<div class="form-group row">
+    <label for="inputSpec" class="col-sm-2 col-form-label">Speciality</label>
+    <div class="col-sm-10">
+        <select class="custom-select form-group" id="inputSpec">
+            <option th:each="spec : ${T(com.schedule.proj.model.Speciality).values()}"
+                    th:value="${spec}" th:text="${spec}"
+                    th:onclick="|redirectSpec('${spec}')|">
+
+<!--                <form id="deleteSubj" action="#" th:action="@{/api/subject/delete/{id}(id=${subject.subjectId})}" method="post">-->
+<!--                    <button onclick="deleteSubj(${subject.subjectId})" type="submit" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
+<!--                </form>-->
+            </option>
+        </select>
+    </div>
+</div>
 
 <table class="table  table-bordered  admin-panel__table">
     <colgroup>
@@ -95,6 +110,13 @@
 
 
     <div>
+        <tr>
+            <td colspan="2" classs="admin-panel__subjects-table-time-add-button-wrap">
+                <form action="#" th:action="@{/api/subject/add/}" method="get">
+                    <button type="submit" class="btn  admin-panel__subjects-table-time-add-button">Add</button>
+                </form>
+            </td>
+        </tr>
         <tr th:each="day: ${days}">
             <td class="admin-table__day" th:text="${day.name}"></td>
             <td class="admin-panel__table-wrapper">
@@ -104,17 +126,19 @@
                         <td class="admin-panel__table-cell">
                             <table class="admin-table__inner-table">
                                 <tr class="admin-panel__subjects-table-subject" th:each="subject: ${time.subjects}">
-                                    <td class="admin-panel__subjects-table-subject-name" th:text="${subject.name}"></td>
-                                    <td class="admin-panel__subjects-table-subject-teacher" th:text="${subject.teacher}">subject.teacher</td>
-                                    <td class="admin-panel__subjects-table-subject-group" th:text="${subject.group}"></td>
+                                    <td class="admin-panel__subjects-table-subject-name" th:text="${subject.subjectName}"></td>
+                                    <td class="admin-panel__subjects-table-subject-teacher" th:text="${subject.subjectTeacher.getUser().getFirstName() + subject.subjectTeacher.getUser().getLastName()}"></td>
+                                    <td class="admin-panel__subjects-table-subject-group" th:text="${subject.subjectGroup}"></td>
                                     <td class="admin-panel__subjects-table-subject-weeks" th:text="${subject.weeks}"></td>
                                     <td class="admin-panel__subjects-table-subject-buttons">
                                         <!-- TODO: add submit -->
-                                        <form id="deleteSubj" action="#" th:action="@{/api/subject/delete/{id}(id=${subject.id})}" method="post">
-                                            <button type="submit" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>
+                                        <form id="deleteSubj" action="#" th:action="@{/api/subject/delete/{id}(id=${subject.subjectId})}" method="post">
+                                            <button onclick="deleteSubj(${subject.subjectId})" type="submit" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>
                                         </form>
-<!--                                        <button onclick="deleteSubject(${subject.id})" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
-                                        <form action="#" th:action="@{/api/subject/edit/{id}(id=${subject.id})}" th:object="${subject}" method="get">
+<!--                                        <button th:onclick="|deleteSubject('${subject.subjectId}')|" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
+
+                                        <!--                                        <button onclick="deleteSubject(${subject.id})" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
+                                        <form action="#" th:action="@{/api/subject/edit/{id}(id=${subject.subjectId})}" th:object="${subject}" method="get">
                                             <button type="submit" class="btn  admin-panel__subjects-table-subject-edit-button">Edit</button>
                                         </form>
                                     </td>
@@ -129,19 +153,13 @@
                                         <button class="admin-panel__subjects-table-subject-delete-button">Delete</button>
                                     </td>
                                 </tr> -->
-                                <tr>
-                                    <td colspan="5" classs="admin-panel__subjects-table-time-add-button-wrap">
-                                        <form action="#" th:action="@{/api/subject/add/}" method="get">
-                                            <button type="submit" class="btn  admin-panel__subjects-table-time-add-button">Add</button>
-                                        </form>
-                                    </td>
-                                </tr>
                             </table>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
+
     </div>
 </table>
 

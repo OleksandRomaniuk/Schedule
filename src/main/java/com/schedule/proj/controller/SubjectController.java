@@ -150,4 +150,18 @@ public class SubjectController {
         return "subject-add";
     }
 
+    @PostMapping("/add")
+    public String addSubjectP(@ModelAttribute("subject") SubjectDTO subject, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "subject-add";
+        }
+
+        Subject newSubj = new Subject(0, subject.getSubjectTeacher(), subject.getSubjectName(),
+                subject.getDayOfWeek(), LocalTime.parse(subject.getSubjectTime(), DateTimeFormatter.ofPattern("HH:mm")),
+                subject.getSubjectGroup(), subject.getSubjectFaculty(), subject.getSubjectSpeciality(), subject.getEducationFormat());
+
+        subjectService.createSubject(newSubj);
+        return "redirect:/api/admin/schedule?speciality=" + subject.getSubjectSpeciality();
+    }
+
 }

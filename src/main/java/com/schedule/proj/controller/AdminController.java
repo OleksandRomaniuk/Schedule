@@ -45,6 +45,7 @@ public class AdminController {
         String userLogin = jwtProvider.getLoginFromToken(token);
         User user = userService.findUserByEmail(userLogin);
 
+        model.addAttribute("curSpec", speciality);
         model.addAttribute("user", user);
 //        return "user-page";
         model.addAttribute("days", subjectService.getScheduleDaysBySpecility(speciality));

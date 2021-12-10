@@ -30,17 +30,19 @@ function deleteSubject(id) {
     });
 }
 
-function redirectSpec(sp) {
+function redirectSpec() {
     console.log("here");
-    $.ajax({
-        url: "http://localhost:8080/api/admin/schedule?speciality=" + sp,
-        type: "get",
-        success: function() {
-            // Do something with the response.
-            // Might want to check for errors here.
-            location.reload();
-        }, error: function(error) {
-            // Here you can handle exceptions thrown by the server or your controller.
-        }
-    });
+    window.location.href = "http://localhost:8080/api/admin/schedule?speciality=" + $("#inputSpec option:selected").text();
+    // $.ajax({
+    //     url: "http://localhost:8080/api/admin/schedule?speciality=" + $("#inputSpec option:selected").text(),
+    //     type: "get",
+    //     success: function() {
+    //         // Do something with the response.
+    //         // Might want to check for errors here.
+    //         // location.reload();
+    //
+    //     }, error: function(error) {
+    //         // Here you can handle exceptions thrown by the server or your controller.
+    //     }
+    // });
 }

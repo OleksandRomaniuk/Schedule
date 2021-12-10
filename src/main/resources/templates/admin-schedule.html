@@ -74,7 +74,7 @@
         <select class="custom-select form-group" id="inputSpec">
             <option th:each="spec : ${T(com.schedule.proj.model.Speciality).values()}"
                     th:value="${spec}" th:text="${spec}"
-                    th:onclick="|redirectSpec('${spec}')|">
+                    th:onclick="|redirectSpec()|">
 
 <!--                <form id="deleteSubj" action="#" th:action="@{/api/subject/delete/{id}(id=${subject.subjectId})}" method="post">-->
 <!--                    <button onclick="deleteSubj(${subject.subjectId})" type="submit" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
@@ -165,5 +165,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="http://localhost:8080/js/admin-table.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $("#inputSpec").val([[${curSpec}]]).change();
+
+    /*]]>*/
+</script>
 </body>
 </html>

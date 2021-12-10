@@ -96,14 +96,14 @@ public class SubjectController {
         return ResponseEntity.ok(subjectService.findStudentubjectByToken(request));
     }
 
-    @PostMapping(path = "/delete/{subjectId}")
-    public void deleteSubjectPost(@PathVariable Integer subjectId) {
-        subjectService.deleteSubject(subjectId);
-    }
-
     @GetMapping("/subjectByWeek")
     public ResponseEntity<?> findsubjectByWeek(HttpServletRequest request,@RequestParam(required = false) String week){
         return ResponseEntity.ok(subjectService.findStudentSubjectByTokenAndWeek( request , week));
+    }
+
+    @PostMapping(path = "/delete/{subjectId}")
+    public void deleteSubjectPost(@PathVariable Integer subjectId) {
+        subjectService.deleteSubject(subjectId);
     }
 
     @PostMapping("/edit/{subjectId}")

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,18 +39,18 @@ public class AdminController {
         ResponseEntity<String> result = adminService.createBD();
         return new ResponseEntity<String>(String.valueOf(result), HttpStatus.OK);
     }
-
-    @GetMapping("/schedule")
-    public String loginUserForm(@CookieValue("Authorization") String token, Model model,
-                                @RequestParam String speciality){
-        String userLogin = jwtProvider.getLoginFromToken(token);
-        User user = userService.findUserByEmail(userLogin);
-
-        model.addAttribute("curSpec", speciality);
-        model.addAttribute("user", user);
-//        return "user-page";
-        model.addAttribute("days", subjectService.getScheduleDaysBySpecility(speciality));
-        return "admin-schedule";
-    }
+//
+//    @GetMapping("/schedule")
+//    public String loginUserForm(@CookieValue(HttpHeaders.AUTHORIZATION) String token, Model model,
+//                                @RequestParam String speciality){
+//        String userLogin = jwtProvider.getLoginFromToken(token);
+//        User user = userService.findUserByEmail(userLogin);
+//
+//        model.addAttribute("curSpec", speciality);
+//        model.addAttribute("user", user);
+////        return "user-page";
+//        model.addAttribute("days", subjectService.getScheduleDaysBySpecility(speciality));
+//        return "admin-schedule";
+//    }
 
 }

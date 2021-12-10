@@ -6,8 +6,10 @@ import com.schedule.proj.model.DTO.LoginDTO;
 import com.schedule.proj.model.DTO.UserDTO;
 import com.schedule.proj.model.User;
 import com.schedule.proj.security.jwt.CustomUserDetails;
+import com.schedule.proj.security.jwt.JwtProvider;
 import com.schedule.proj.security.jwt.cache.CurrentUser;
 import com.schedule.proj.service.AuthenticationService;
+import com.schedule.proj.service.SubjectService;
 import com.schedule.proj.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,10 @@ public class AuthController {
     private AuthenticationService authenticationService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private  SubjectService subjectService;
+    @Autowired
+    private  JwtProvider jwtProvider;
 
 
     @GetMapping("/login")
@@ -97,5 +103,6 @@ public class AuthController {
         model.addAttribute("loginDTO", new LoginDTO());
         return "user-reset";
     }
+
 
 }

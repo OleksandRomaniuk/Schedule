@@ -10,6 +10,7 @@ import com.schedule.proj.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -219,6 +222,82 @@ public class UserController {
 
 
 
+
+
+    @GetMapping("/{id}/admin/schedule")
+    public String loginUserFor(@PathVariable Long id, @CookieValue(HttpHeaders.AUTHORIZATION) String token, Model model,
+                                @RequestParam String speciality){
+        // String userLogin = jwtProvider.getLoginFromToken(token);
+        User user = userService.getUserById(id.intValue());
+
+        model.addAttribute("curSpec", speciality);
+        model.addAttribute("user", user);
+//        return "user-page";
+        model.addAttribute("days", subjectService.getScheduleDaysBySpecility(speciality));
+        return "admin-schedule";
+    }
+    @PostMapping(path = "/{id}/admin/subject/delete/{subjectId}")
+    public void deleteSubjectPost(@PathVariable Long id, @PathVariable Integer subjectId) {
+        subjectService.deleteSubject(subjectId);
+    }
+
+    @PostMapping("/{id}/admin/subject/edit/{subjectId}")
+    public String editSubject(@PathVariable Long id, @ModelAttribute("subject") SubjectDTO subject, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "subject-edit";
+        }
+
+        Subject newSubj = new Subject(subject.getSubjectId(), subject.getSubjectTeacher(), subject.getSubjectName(),
+                subject.getDayOfWeek(), LocalTime.parse(subject.getSubjectTime(), DateTimeFormatter.ofPattern("HH:mm")),
+                subject.getSubjectGroup(), subject.getSubjectFaculty(), subject.getSubjectSpeciality(), subject.getEducationFormat());
+
+        subjectService.updateSubject(newSubj);
+        return "redirect:/api/user/1/admin/schedule?speciality=" + subject.getSubjectSpeciality();
+    }
+
+    @GetMapping("/{id}/admin/subject/edit/{subjectId}")
+    public String editSubject(@PathVariable Integer subjectId, Model model){
+        model.addAttribute("subject", subjectService.getSubjectDTO(subjectId));
+        model.addAttribute("times",
+                new LocalTime[]{LocalTime.of(8, 30),
+                        LocalTime.of(10, 0),
+                        LocalTime.of(11, 40),
+                        LocalTime.of(13, 30),
+                        LocalTime.of(15, 0),
+                        LocalTime.of(16, 30),
+                        LocalTime.of(18, 0)});
+        model.addAttribute("teachers", teacherService.getAllTeachers());
+        return "subject-edit";
+    }
+
+    @GetMapping("/{id}/admin/subject/add")
+    public String addSubject(Model model){
+        model.addAttribute("subject", new SubjectDTO());
+        model.addAttribute("times",
+                new LocalTime[]{LocalTime.of(8, 30),
+                        LocalTime.of(10, 0),
+                        LocalTime.of(11, 40),
+                        LocalTime.of(13, 30),
+                        LocalTime.of(15, 0),
+                        LocalTime.of(16, 30),
+                        LocalTime.of(18, 0)});
+        model.addAttribute("teachers", teacherService.getAllTeachers());
+        return "subject-add";
+    }
+
+    @PostMapping("/{id}/admin/subject/add")
+    public String addSubjectP(@ModelAttribute("subject") SubjectDTO subject, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "subject-add";
+        }
+
+        Subject newSubj = new Subject(0, subject.getSubjectTeacher(), subject.getSubjectName(),
+                subject.getDayOfWeek(), LocalTime.parse(subject.getSubjectTime(), DateTimeFormatter.ofPattern("HH:mm")),
+                subject.getSubjectGroup(), subject.getSubjectFaculty(), subject.getSubjectSpeciality(), subject.getEducationFormat());
+
+        subjectService.createSubject(newSubj);
+        return "redirect:/api/user/1/admin/schedule?speciality=" + subject.getSubjectSpeciality();
+    }
 
 
 

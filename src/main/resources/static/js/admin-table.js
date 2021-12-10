@@ -18,7 +18,7 @@ $('#deleteSubj').on('click', function(e) {
 function deleteSubject(id) {
     console.log("here");
     $.ajax({
-        url: "localhost:8080/api/subject/delete/" + id,
+        url: "localhost:8080/api/user/1/admin/subject/delete/" + id,
         type: "post",
         success: function() {
             // Do something with the response.
@@ -32,7 +32,7 @@ function deleteSubject(id) {
 
 function redirectSpec() {
     console.log("here");
-    window.location.href = "http://localhost:8080/api/admin/schedule?speciality=" + $("#inputSpec option:selected").text();
+    window.location.href = "http://localhost:8080/api/user/1/admin/schedule?speciality=" + $("#inputSpec option:selected").text();
     // $.ajax({
     //     url: "http://localhost:8080/api/admin/schedule?speciality=" + $("#inputSpec option:selected").text(),
     //     type: "get",

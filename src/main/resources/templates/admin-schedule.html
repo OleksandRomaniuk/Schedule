@@ -112,7 +112,7 @@
     <div>
         <tr>
             <td colspan="2" classs="admin-panel__subjects-table-time-add-button-wrap">
-                <form action="#" th:action="@{/api/subject/add/}" method="get">
+                <form action="#" th:action="@{/api/1/admin/subject/add/}" method="get">
                     <button type="submit" class="btn  admin-panel__subjects-table-time-add-button">Add</button>
                 </form>
             </td>
@@ -132,13 +132,13 @@
                                     <td class="admin-panel__subjects-table-subject-weeks" th:text="${subject.weeks}"></td>
                                     <td class="admin-panel__subjects-table-subject-buttons">
                                         <!-- TODO: add submit -->
-                                        <form id="deleteSubj" action="#" th:action="@{/api/subject/delete/{id}(id=${subject.subjectId})}" method="post">
+                                        <form id="deleteSubj" action="#" th:action="@{/api/user/1/admin/subj/delete/{id}(id=${subject.subjectId})}" method="post">
                                             <button onclick="deleteSubj(${subject.subjectId})" type="submit" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>
                                         </form>
 <!--                                        <button th:onclick="|deleteSubject('${subject.subjectId}')|" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
 
                                         <!--                                        <button onclick="deleteSubject(${subject.id})" class="btn  admin-panel__subjects-table-subject-delete-button">Delete</button>-->
-                                        <form action="#" th:action="@{/api/subject/edit/{id}(id=${subject.subjectId})}" th:object="${subject}" method="get">
+                                        <form action="#" th:action="@{/api/user/1/admin/subj/edit/{id}(id=${subject.subjectId})}" th:object="${subject}" method="get">
                                             <button type="submit" class="btn  admin-panel__subjects-table-subject-edit-button">Edit</button>
                                         </form>
                                     </td>

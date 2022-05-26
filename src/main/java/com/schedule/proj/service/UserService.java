@@ -1,30 +1,19 @@
 package com.schedule.proj.service;
 
 import com.schedule.proj.exсeption.RegistrationException;
-import com.schedule.proj.exсeption.StudentNotFoundException;
-import com.schedule.proj.model.DTO.StudentResponseDTO;
-import com.schedule.proj.model.Student;
 import com.schedule.proj.model.User;
 import com.schedule.proj.repository.UserRepository;
 import com.schedule.proj.security.jwt.JwtProvider;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -63,42 +52,6 @@ public class UserService {
         String email =jwtProvider.getLoginFromToken(token);
         return userRepository.findUserByEmail(email);
     }
-
-    public ResponseEntity<String> updateUser(User userToUpdate, StudentResponseDTO request) {
-        String emailNew = request.getEmail();
-        int id = userToUpdate.getId();
-
-        if (userToUpdate != null) {
-
-            if (request.getFirstName().isEmpty()) {
-                userToUpdate.setFirstName("");
-            }
-            else{
-                    userToUpdate.setFirstName(request.getFirstName());
-                }
-
-                if (request.getLastName().isEmpty()) {
-                    userToUpdate.setLastName("");
-                }
-            else{
-                        userToUpdate.setLastName(request.getLastName());
-                    }
-
-                    //update email using method from emailService
-                    //if emails are equals do nothing
-                    if (!userToUpdate.getEmail().equals(emailNew)) {
-                        //TODO create new token with new email
-                        String reportUpdate = emailService.updateEmail(emailNew, id);
-                    }
-                    userRepository.save(userToUpdate);
-
-
-
-                } else {
-                    throw new StudentNotFoundException("User with id = " + id + " not found");
-                }
-                return new ResponseEntity<String>(HttpStatus.OK);
-            }
 
 
     public  User findUserByEmail(String email){

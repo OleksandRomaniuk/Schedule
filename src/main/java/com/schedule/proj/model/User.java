@@ -24,13 +24,7 @@ public class User {
     @Column(name = "user_id")
     private int id;
 
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private Teacher teacher;
 
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private Student student;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
@@ -84,15 +78,5 @@ public class User {
         return Objects.hash(id, email);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", role=" + userRole +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
-                '}';
-    }
+
 }

@@ -2,15 +2,10 @@ package com.schedule.proj.service;
 
 import com.schedule.proj.exсeption.RegistrationException;
 import com.schedule.proj.model.DTO.UserDTO;
-import com.schedule.proj.model.Student;
-import com.schedule.proj.model.Teacher;
 import com.schedule.proj.model.User;
 import com.schedule.proj.model.UserRole;
-import com.schedule.proj.repository.StudentRepository;
-import com.schedule.proj.repository.TeacherRepository;
 import com.schedule.proj.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -20,11 +15,9 @@ public class RegistrationService {
 
     private final  EmailService emailService;
     private final  PasswordService passwordService;
-    private final   TeacherRepository teacherRepository;
+
     private final  UserRepository userRepository;
-    private final  StudentRepository studentRepository;
-    private final   TeacherService teacherService;
-    private final   StudentService studentService;
+
 
 
     public String registration(UserDTO userDTO) throws RegistrationException{
@@ -47,19 +40,10 @@ public class RegistrationService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
 
-        //add role and create record
-        if(userDTO.getRole().equals("TEACHER")){
-            Teacher teacher = new Teacher();
-            user.setUserRole(UserRole.TEACHER);
-            teacher.setUser(user);
-            teacherService.addTeacher(teacher);
+         user.setUserRole(UserRole.USER);
 
-        }else{
-            Student student = new Student();
-            user.setUserRole(UserRole.STUDENT);
-            student.setUser(user);
-            studentService.addStudent(student);
-        }
+         userRepository.save(user);
+
         return "User created";
     }
 

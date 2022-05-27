@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
@@ -50,6 +51,10 @@ public class User {
             message = "Last name must be between 4 and 32 characters")
     @Column(name = "last_name")
     private String lastName;
+
+    @OneToMany
+    private List<Event> events;
+
 
     public User(UserRole userRole,
                 String email,

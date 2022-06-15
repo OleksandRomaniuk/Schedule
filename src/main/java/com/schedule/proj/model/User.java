@@ -13,19 +13,23 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int id;
 
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Event> event;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
@@ -52,8 +56,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToMany
-    private List<Event> events;
+
 
 
     public User(UserRole userRole,

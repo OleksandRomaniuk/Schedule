@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+
     <title>Login User</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
@@ -10,8 +11,8 @@
 <div class="container">
     <div class="row">
         <h1>
-            <span th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" th:text="#{app.name.student}"></span>
-            <span th:if="${user.userRole == T(com.schedule.proj.model.UserRole).TEACHER}" th:text="#{app.name.teacher}"></span>
+            <span th:if="${user.userRole == T(com.schedule.proj.model.UserRole).USER}" th:text="#{app.name.user}"></span>
+
         </h1>
     </div>
 
@@ -20,36 +21,22 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <form action="#" th:action="@{/api/user/{id}(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-secondary">
+                        <button type="submit" class="btn btn-light">
                             Home
                         </button>
                     </form>
                 </li>
                 <li class="nav-item">
                     <form action="#" th:action="@{/api/user/{id}/profile(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-light">
+                        <button type="submit" class="btn btn-secondary">
                             Profile
                         </button>
                     </form>
                 </li>
-                <li class="nav-item">
-                    <form action="#" th:action="@{/api/user/{id}/schedule(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-light">
-                            Schedule
-                        </button>
-                    </form>
-                </li>
-                <li th:if="${user.userRole == T(com.schedule.proj.model.UserRole).STUDENT}" class="nav-item">
+                <li th:if="${user.userRole == T(com.schedule.proj.model.UserRole).USER}" class="nav-item">
                     <form action="#" th:action="@{/api/user/{id}/add(id=${user.id})}" method="get">
                         <button type="submit" class="btn btn-light">
-                            Add Subject
-                        </button>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <form action="#" th:action="@{/api/user/{id}/subjects(id=${user.id})}" method="get">
-                        <button type="submit" class="btn btn-light">
-                            Subjects
+                            Add Events
                         </button>
                     </form>
                 </li>

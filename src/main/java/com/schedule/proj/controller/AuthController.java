@@ -3,16 +3,13 @@ package com.schedule.proj.controller;
 
 import com.schedule.proj.exсeption.JwtAuthenticationException;
 import com.schedule.proj.model.DTO.LoginDTO;
-import com.schedule.proj.model.DTO.UserDTO;
-import com.schedule.proj.model.User;
-import com.schedule.proj.security.jwt.CustomUserDetails;
-import com.schedule.proj.security.jwt.cache.CurrentUser;
+
 import com.schedule.proj.service.AuthenticationService;
 import com.schedule.proj.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,7 +83,7 @@ public class AuthController {
             String message = authenticationService.checkExpiration(request.get("token"));
             res.put("message", message);
             return ResponseEntity.ok(res);
-        }catch (JwtAuthenticationException | ExpiredJwtException e){
+        }catch (ExpiredJwtException e){
             res.put("message",e.getMessage());
             return ResponseEntity.status(401).body(res);
         }

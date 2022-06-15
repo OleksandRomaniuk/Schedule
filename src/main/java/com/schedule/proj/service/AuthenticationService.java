@@ -13,6 +13,7 @@ import com.schedule.proj.security.jwt.JwtProvider;
 import com.schedule.proj.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -69,6 +70,7 @@ public class AuthenticationService {
         return "You have successfully logout";
     }
 
+    @SneakyThrows
     public String checkExpiration(String token) {
         Date expireDateFromToken = jwtProvider.getExpireDateFromToken(token);
        try{

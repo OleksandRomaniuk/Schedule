@@ -1,34 +1,45 @@
 package com.schedule.proj.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Objects;
 
-
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
-@AllArgsConstructor
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "event")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String description;
-    private String start;
-    private String end;
-    private String backgroundColor;
-    private String borderColor;
-    private boolean editable;
+    @Column(name = "event_id")
+    private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 
+    private String name;
+
+    private LocalDate date;
+
+    private LocalTime time;
+
+    private String color;
+
+    private String description;
 
 
 }
